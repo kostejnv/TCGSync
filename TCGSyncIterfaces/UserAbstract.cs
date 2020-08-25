@@ -6,7 +6,91 @@ using System.Threading.Tasks;
 
 namespace TCGSyncIterfacesAndAbstract
 {
-    public class UserAbstract
+    public abstract class UserAbstract
     {
+        public string Usernname;
+
+        protected string TCUsername;
+        protected string TCpassword;
+
+        // What events was last synchronizated
+        public HashSet<Guid> LastGoggleEventsGuid = null;
+        public HashSet<Guid> LastTCEventsGuid = null;
+
+        /// <summary>
+        /// Method to store data about user
+        /// </summary>
+        /// <returns></returns>
+        public abstract string ToStore();
+        public override string ToString() => Usernname;
+    }
+
+    public class User : UserAbstract
+    {
+        public User(string username, string tCUsername, string password)
+        {
+            Usernname = username;
+            TCUsername = tCUsername;
+            TCpassword = password;
+            LastGoggleEventsGuid = new HashSet<Guid>();
+            LastTCEventsGuid = new HashSet<Guid>();       
+        }
+        /// <summary>
+        /// Construct User from stored date (data created from method .ToStore())
+        /// </summary>
+        /// <param name="data"></param>
+        public User(string data)
+        {
+            char[] separator = new char[1] { ';' };
+            var dataArray = data.Split(separator);
+            Usernname = dataArray[0];
+            TCUsername = dataArray[1];
+            TCpassword = dataArray[2];
+            separator[0] = ',';
+            LastGoggleEventsGuid = new HashSet<Guid>();
+            var GEventsGuidsArr = dataArray[3].Split(separator);
+            foreach (var guid in GEventsGuidsArr)
+            {
+                LastGoggleEventsGuid.Add(new Guid(guid));
+            }
+            LastTCEventsGuid = new HashSet<Guid>();
+            var TCEventsGuidsArr = dataArray[4].Split(separator);
+            foreach (var guid in TCEventsGuidsArr)
+            {
+                LastTCEventsGuid.Add(new Guid(guid));
+            }
+        }
+
+        /// <summary>
+        /// Method stores data about user
+        /// </summary>
+        /// <returns></returns>
+        public override string ToStore()
+        {
+            StringBuilder data = new StringBuilder();
+            data.Append(Usernname);
+            data.Append(";");
+            data.Append(TCUsername);
+            data.Append(";");
+            data.Append(TCpassword);
+            data.Append(";");
+            if (LastGoggleEventsGuid == null || LastTCEventsGuid == null)
+                throw new NullReferenceException();
+            foreach (var guid in LastGoggleEventsGuid)
+            {
+                data.Append(guid.ToString());
+                data.Append(",");
+            }
+            data.Remove(data.Length - 1, 1);
+            data.Append(";");
+            foreach (var guid in LastTCEventsGuid)
+            {
+                data.Append(guid.ToString());
+                data.Append(",");
+            }
+            data.Remove(data.Length - 1, 1);
+            data.Append(";");
+            return data.ToString();
+        }
     }
 }

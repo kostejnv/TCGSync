@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TCGSyncIterfacesAndAbstract
 {
-    interface IBrooker
+    public interface IBrooker
     {
         HashSet<EventAbstract> GetEvents(DateTime start, DateTime end);
         

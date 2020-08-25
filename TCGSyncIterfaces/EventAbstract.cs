@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace TCGSyncIterfacesAndAbstract
 {
-    class EventAbstract
+    public class EventAbstract
     {
-        Guid ID;
-        DateTime Start;
-        DateTime End;
-        String Description;
+        public Guid ID;
+        public DateTime? Start;
+        public DateTime? End;
+        public String Description;
     }
 }

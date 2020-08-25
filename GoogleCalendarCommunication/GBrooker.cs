@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GoogleCalendarCommunication
 {
-    public class Class1
+    class GBrooker
     {
     }
 }

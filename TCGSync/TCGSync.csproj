@@ -76,6 +76,20 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GoogleCalendarCommunication\GoogleCalendarCommunication.csproj">
+      <Project>{b512cd6a-7612-4c9f-b7e8-5bd044f136b2}</Project>
+      <Name>GoogleCalendarCommunication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TCGSyncIterfaces\TCGSyncIterfacesAndAbstract.csproj">
+      <Project>{6ebcf7ce-2345-4757-904a-013bccb835db}</Project>
+      <Name>TCGSyncIterfacesAndAbstract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TimeCockpitCommunication\TimeCockpitCommunication.csproj">
+      <Project>{b30ac64b-3989-44e1-8e5f-6a975ffcda73}</Project>
+      <Name>TimeCockpitCommunication</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

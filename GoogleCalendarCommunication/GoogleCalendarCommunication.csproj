@@ -78,6 +78,12 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TCGSyncIterfaces\TCGSyncIterfacesAndAbstract.csproj">
+      <Project>{6ebcf7ce-2345-4757-904a-013bccb835db}</Project>
+      <Name>TCGSyncIterfacesAndAbstract</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

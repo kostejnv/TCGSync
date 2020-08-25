@@ -8,5 +8,10 @@ namespace TCGSyncIterfacesAndAbstract
 {
     interface IBrooker
     {
+        HashSet<EventAbstract> GetEvents(DateTime start, DateTime end);
+        
+        void CreateEvent(EventAbstract event1);
+
+        void SetEvent(EventAbstract event1);
     }
 }

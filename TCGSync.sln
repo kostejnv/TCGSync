@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeCockpitCommunication", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleCalendarCommunication", "GoogleCalendarCommunication\GoogleCalendarCommunication.csproj", "{B512CD6A-7612-4C9F-B7E8-5BD044F136B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCGSyncIterfacesAndAbstract", "TCGSyncIterfaces\TCGSyncIterfacesAndAbstract.csproj", "{6EBCF7CE-2345-4757-904A-013BCCB835DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B512CD6A-7612-4C9F-B7E8-5BD044F136B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B512CD6A-7612-4C9F-B7E8-5BD044F136B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B512CD6A-7612-4C9F-B7E8-5BD044F136B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EBCF7CE-2345-4757-904A-013BCCB835DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EBCF7CE-2345-4757-904A-013BCCB835DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EBCF7CE-2345-4757-904A-013BCCB835DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EBCF7CE-2345-4757-904A-013BCCB835DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

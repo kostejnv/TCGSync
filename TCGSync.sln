@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCGSync", "TCGSync\TCGSync.csproj", "{003E3B6E-B62E-4F15-9C13-502DDFD0AFBE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeCockpitCommunication", "TimeCockpitCommunication\TimeCockpitCommunication.csproj", "{B30AC64B-3989-44E1-8E5F-6A975FFCDA73}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{003E3B6E-B62E-4F15-9C13-502DDFD0AFBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{003E3B6E-B62E-4F15-9C13-502DDFD0AFBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{003E3B6E-B62E-4F15-9C13-502DDFD0AFBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B30AC64B-3989-44E1-8E5F-6A975FFCDA73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B30AC64B-3989-44E1-8E5F-6A975FFCDA73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B30AC64B-3989-44E1-8E5F-6A975FFCDA73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B30AC64B-3989-44E1-8E5F-6A975FFCDA73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

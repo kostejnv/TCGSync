@@ -23,12 +23,12 @@ namespace TimeCockpitCommunication
             Username = username;
         }
 
-        public Guid CreateEvent(EventAbstract event1)
+        public string CreateEvent(EventAbstract event1)
         {
             var tCEvent = event1.ToAPP_Timesheet();
             TCService.AddToAPP_Timesheet(tCEvent);
             TCService.SaveChanges();
-            return tCEvent.APP_TimesheetUuid;
+            return tCEvent.APP_TimesheetUuid.ToString();
         }
 
         public HashSet<EventAbstract> GetEvents(DateTime start, DateTime end)
@@ -45,9 +45,10 @@ namespace TimeCockpitCommunication
             return eventHashSet;
         }
 
-        public void SetEvent(EventAbstract event1)
+        public void SetEvent(EventAbstract event1) //TODO
         {
-            APP_Timesheet tCEvent = TCService.APP_Timesheet.Where(t => t.APP_TimesheetUuid == event1.ID).First();
+            Guid eventGuid = new Guid(event1.ID); 
+            APP_Timesheet tCEvent = TCService.APP_Timesheet.Where(t => t.APP_TimesheetUuid == eventGuid ).First();
             tCEvent.APP_BeginTime = event1.Start;
             tCEvent.APP_EndTime = event1.End;
             tCEvent.APP_Description = event1.Description;
@@ -58,7 +59,7 @@ namespace TimeCockpitCommunication
     {
         internal TimeCockpitEvent(APP_Timesheet timesheet)
         {
-            ID = timesheet.APP_TimesheetUuid;
+            ID = timesheet.APP_TimesheetUuid.ToString();
             Start = timesheet.APP_BeginTime;
             End = timesheet.APP_EndTime;
             Description = timesheet.APP_Description;

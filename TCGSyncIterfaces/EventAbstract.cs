@@ -8,9 +8,9 @@ namespace TCGSyncIterfacesAndAbstract
 {
     public class EventAbstract
     {
-        public Guid ID;
+        public string ID;
         public DateTime? Start;
         public DateTime? End;
-        public String Description;
+        public string Description;
     }
 }

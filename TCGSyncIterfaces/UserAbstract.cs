@@ -14,8 +14,8 @@ namespace TCGSyncIterfacesAndAbstract
         protected string TCpassword;
 
         // What events was last synchronizated
-        public HashSet<Guid> LastGoggleEventsGuid = null;
-        public HashSet<Guid> LastTCEventsGuid = null;
+        public HashSet<string> LastGoggleEventsGuid = null;
+        public HashSet<string> LastTCEventsGuid = null;
 
         /// <summary>
         /// Method to store data about user
@@ -32,8 +32,8 @@ namespace TCGSyncIterfacesAndAbstract
             Usernname = username;
             TCUsername = tCUsername;
             TCpassword = password;
-            LastGoggleEventsGuid = new HashSet<Guid>();
-            LastTCEventsGuid = new HashSet<Guid>();       
+            LastGoggleEventsGuid = new HashSet<string>();
+            LastTCEventsGuid = new HashSet<string>();       
         }
         /// <summary>
         /// Construct User from stored date (data created from method .ToStore())
@@ -47,17 +47,17 @@ namespace TCGSyncIterfacesAndAbstract
             TCUsername = dataArray[1];
             TCpassword = dataArray[2];
             separator[0] = ',';
-            LastGoggleEventsGuid = new HashSet<Guid>();
+            LastGoggleEventsGuid = new HashSet<string>();
             var GEventsGuidsArr = dataArray[3].Split(separator);
             foreach (var guid in GEventsGuidsArr)
             {
-                LastGoggleEventsGuid.Add(new Guid(guid));
+                LastGoggleEventsGuid.Add(guid);
             }
-            LastTCEventsGuid = new HashSet<Guid>();
+            LastTCEventsGuid = new HashSet<string>();
             var TCEventsGuidsArr = dataArray[4].Split(separator);
             foreach (var guid in TCEventsGuidsArr)
             {
-                LastTCEventsGuid.Add(new Guid(guid));
+                LastTCEventsGuid.Add(guid);
             }
         }
 

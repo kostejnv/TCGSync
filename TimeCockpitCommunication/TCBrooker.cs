@@ -48,7 +48,7 @@ namespace TimeCockpitCommunication
         public void SetEvent(EventAbstract event1) //TODO
         {
             Guid eventGuid = new Guid(event1.ID); 
-            APP_Timesheet tCEvent = TCService.APP_Timesheet.Where(t => t.APP_TimesheetUuid == eventGuid ).First();
+            APP_Timesheet tCEvent = TCService.APP_Timesheet.Where(t => t.APP_TimesheetUuid == eventGuid).First();
             tCEvent.APP_BeginTime = event1.Start;
             tCEvent.APP_EndTime = event1.End;
             tCEvent.APP_Description = event1.Description;

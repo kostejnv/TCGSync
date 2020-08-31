@@ -8,9 +8,18 @@ namespace TCGSyncIterfacesAndAbstract
 {
     public abstract class UserAbstract
     {
-        public string Usernname;
-
-        protected string TCUsername;
+        private string _tcUsername;
+        public string TCUsername
+        {
+            get { return _tcUsername; }
+            set { _tcUsername = value; }
+        }
+        private string _tcPassword;
+        public string TCPassword
+        {
+            protected get { return _tcPassword; }
+            set { _tcPassword = value; }
+        }
         protected string TCpassword;
 
         // What events was last synchronizated
@@ -22,19 +31,33 @@ namespace TCGSyncIterfacesAndAbstract
         /// </summary>
         /// <returns></returns>
         public abstract string ToStore();
-        public override string ToString() => Usernname;
+        public override string ToString() => TCUsername;
     }
 
     public class User : UserAbstract
     {
-        public User(string username, string tCUsername, string password)
+        public int PastSyncInterval;
+        public bool IsFutureSpecified = true;
+        private int? _futureSyncInterval;
+        public int? FutureSyncInterval
         {
-            Usernname = username;
+            get { return _futureSyncInterval; }
+            set
+            {
+                if (IsFutureSpecified) _futureSyncInterval = value;
+                else _futureSyncInterval = null;
+            }
+        }
+        public User(string tCUsername, string password)
+        {
             TCUsername = tCUsername;
             TCpassword = password;
             LastGoggleEventsGuid = new HashSet<string>();
             LastTCEventsGuid = new HashSet<string>();       
         }
+
+        public User()
+        { }
         /// <summary>
         /// Construct User from stored date (data created from method .ToStore())
         /// </summary>
@@ -43,18 +66,17 @@ namespace TCGSyncIterfacesAndAbstract
         {
             char[] separator = new char[1] { ';' };
             var dataArray = data.Split(separator);
-            Usernname = dataArray[0];
-            TCUsername = dataArray[1];
-            TCpassword = dataArray[2];
+            TCUsername = dataArray[0];
+            TCpassword = dataArray[1];
             separator[0] = ',';
             LastGoggleEventsGuid = new HashSet<string>();
-            var GEventsGuidsArr = dataArray[3].Split(separator);
+            var GEventsGuidsArr = dataArray[2].Split(separator);
             foreach (var guid in GEventsGuidsArr)
             {
                 LastGoggleEventsGuid.Add(guid);
             }
             LastTCEventsGuid = new HashSet<string>();
-            var TCEventsGuidsArr = dataArray[4].Split(separator);
+            var TCEventsGuidsArr = dataArray[3].Split(separator);
             foreach (var guid in TCEventsGuidsArr)
             {
                 LastTCEventsGuid.Add(guid);
@@ -68,8 +90,6 @@ namespace TCGSyncIterfacesAndAbstract
         public override string ToStore()
         {
             StringBuilder data = new StringBuilder();
-            data.Append(Usernname);
-            data.Append(";");
             data.Append(TCUsername);
             data.Append(";");
             data.Append(TCpassword);

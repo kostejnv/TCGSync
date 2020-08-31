@@ -76,15 +76,12 @@
     <None Include="client_id.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="credentials.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TCGSyncIterfaces\TCGSyncIterfacesAndAbstract.csproj">
-      <Project>{6ebcf7ce-2345-4757-904a-013bccb835db}</Project>
-      <Name>TCGSyncIterfacesAndAbstract</Name>
+    <ProjectReference Include="..\TCGSync.Entities\TCGSync.Entities.csproj">
+      <Project>{ffdf4876-37ea-439c-b09c-89d662c0ce8b}</Project>
+      <Name>TCGSync.Entities</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

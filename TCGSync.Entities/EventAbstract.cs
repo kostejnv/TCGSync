@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TCGSyncIterfacesAndAbstract
+namespace TCGSync.Entities
 {
-    public class EventAbstract
+    public abstract class EventAbstract
     {
         public string ID;
         public DateTime? Start;

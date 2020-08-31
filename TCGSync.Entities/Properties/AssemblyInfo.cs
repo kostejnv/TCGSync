@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TCGSyncIterfaces")]
+[assembly: AssemblyTitle("TCGSync.Entities")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("HP Inc.")]
-[assembly: AssemblyProduct("TCGSyncIterfaces")]
+[assembly: AssemblyProduct("TCGSync.Entities")]
 [assembly: AssemblyCopyright("Copyright © HP Inc. 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("6ebcf7ce-2345-4757-904a-013bccb835db")]
+[assembly: Guid("dd4b2e68-f3d8-4a72-99b1-e81f516f33b1")]
 
 // Version information for an assembly consists of the following four values:
 //

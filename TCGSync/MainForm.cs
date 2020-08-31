@@ -7,8 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TCGSync;
+using TCGSync.Entities;
 
-namespace TCGSync
+namespace TCGSync.UI
 {
     public partial class MainForm : Form
     {

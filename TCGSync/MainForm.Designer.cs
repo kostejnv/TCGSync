@@ -1,4 +1,4 @@
-﻿namespace TCGSync
+﻿namespace TCGSync.UI
 {
     partial class MainForm
     {
@@ -266,7 +266,7 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.ListBox UserListBox;
+        public System.Windows.Forms.ListBox UserListBox;
         private System.Windows.Forms.Button DeleteButton;
         private System.Windows.Forms.Button CreateButton;
         private System.Windows.Forms.Button SynchronizeButton;

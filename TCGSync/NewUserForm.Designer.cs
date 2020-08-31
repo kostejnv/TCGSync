@@ -1,4 +1,4 @@
-﻿namespace TCGSync
+﻿namespace TCGSync.UI
 {
     partial class NewUserForm
     {

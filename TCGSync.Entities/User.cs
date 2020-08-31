@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TCGSyncIterfacesAndAbstract
+namespace TCGSync.Entities
 {
-    public abstract class UserAbstract
+    public class User
     {
         private string _tcUsername;
         public string TCUsername
@@ -25,17 +25,6 @@ namespace TCGSyncIterfacesAndAbstract
         // What events was last synchronizated
         public HashSet<string> LastGoggleEventsGuid = null;
         public HashSet<string> LastTCEventsGuid = null;
-
-        /// <summary>
-        /// Method to store data about user
-        /// </summary>
-        /// <returns></returns>
-        public abstract string ToStore();
-        public override string ToString() => TCUsername;
-    }
-
-    public class User : UserAbstract
-    {
         public int PastSyncInterval;
         public bool IsFutureSpecified = true;
         private int? _futureSyncInterval;
@@ -48,20 +37,8 @@ namespace TCGSyncIterfacesAndAbstract
                 else _futureSyncInterval = null;
             }
         }
-        public User(string tCUsername, string password)
-        {
-            TCUsername = tCUsername;
-            TCpassword = password;
-            LastGoggleEventsGuid = new HashSet<string>();
-            LastTCEventsGuid = new HashSet<string>();       
-        }
 
-        public User()
-        { }
-        /// <summary>
-        /// Construct User from stored date (data created from method .ToStore())
-        /// </summary>
-        /// <param name="data"></param>
+        public User() { }
         public User(string data)
         {
             char[] separator = new char[1] { ';' };
@@ -82,12 +59,11 @@ namespace TCGSyncIterfacesAndAbstract
                 LastTCEventsGuid.Add(guid);
             }
         }
-
         /// <summary>
         /// Method stores data about user
         /// </summary>
         /// <returns></returns>
-        public override string ToStore()
+        public string ToStore()
         {
             StringBuilder data = new StringBuilder();
             data.Append(TCUsername);
@@ -112,5 +88,6 @@ namespace TCGSyncIterfacesAndAbstract
             data.Append(";");
             return data.ToString();
         }
+        public override string ToString() => TCUsername;
     }
 }

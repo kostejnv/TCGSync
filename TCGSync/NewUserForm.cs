@@ -7,8 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TCGSync;
+using TCGSync.UserModifications;
 
-namespace TCGSync
+namespace TCGSync.UI
 {
     public partial class NewUserForm : Form
     {
@@ -52,7 +54,8 @@ namespace TCGSync
             userCreator.SetSetting((int)StartDomain.Value, !EndSpecifiedCheckBox.Checked, (int)EndDomain.Value);
             try
             {
-                Synchronization.AddUserToUserDatabase(userCreator.GetUser());
+                UserDatabase.AddUserToUserDatabase(userCreator.GetUser());
+                this.Dispose();
             }
             catch (InvalidOperationException ex)
             {

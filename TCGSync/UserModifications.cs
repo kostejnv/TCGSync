@@ -1,31 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using TCGSyncIterfacesAndAbstract;
+using TCGSync.Entities;
 using TimeCockpitCommunication;
 using GoogleCalendarCommunication;
 
-namespace TCGSync
+namespace TCGSync.UserModifications
 {
-    static class Program
-    {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
-        }
-
-         
-    }
-
-    class UserCreator
+    public class UserCreator
     {
         private User NewUser;
         private bool WasTCVerify;
@@ -72,21 +56,6 @@ namespace TCGSync
             if (!WasGLogin) throw new InvalidOperationException("Google Login was not successful");
             if (!WaSSetSetting) throw new InvalidOperationException("Setting was not filled");
             return NewUser;
-        }
-    }
-
-    public static class Synchronization
-    {
-        private static List<User> UserDatabase;
-        static Synchronization()
-        {
-            UserDatabase = new List<User>();
-        }
-
-
-        public static void AddUserToUserDatabase(User user)
-        {
-            UserDatabase.Add(user);
         }
     }
 }

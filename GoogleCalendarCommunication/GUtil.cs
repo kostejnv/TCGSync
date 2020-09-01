@@ -10,15 +10,26 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TCGSync.Entities;
 
 namespace GoogleCalendarCommunication
 {
+    /// <summary>
+    /// static class with google calendar utilities 
+    /// </summary>
     public static class GUtil
     {
-        static string[] Scopes = { CalendarService.Scope.Calendar };
-        static string ApplicationName = "Google Calendar API.NET Quickstart";
+        /// <summary>
+        /// Google Calendar permissions for this application
+        /// </summary>
+        static readonly string[] Scopes = GBrooker.Scopes;
 
-        public static bool GLogin(string username)
+        /// <summary>
+        /// Log in Google Calendar
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public static bool GLogin(User user)
         {
             try
             {
@@ -26,13 +37,14 @@ namespace GoogleCalendarCommunication
                 using (var stream =
                     new FileStream("client_id.json", FileMode.Open, FileAccess.Read))
                 {
-                    // The file token.json stores the user's access and refresh tokens, and is created
-                    // automatically when the authorization flow completes for the first time.
+                    // Name of folder that contains authentification tokens
                     string credPath = "google_token";
+
+                    // This method try to find user's token, if failed create new one to credPath folder after log in Google
                     credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                         GoogleClientSecrets.Load(stream).Secrets,
                         Scopes,
-                        username,
+                        user.TCUsername,
                         CancellationToken.None,
                         new FileDataStore(credPath, true)).Result;
                 }

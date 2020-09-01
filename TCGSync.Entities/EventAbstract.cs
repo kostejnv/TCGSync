@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace TCGSync.Entities
 {
+
     public abstract class EventAbstract
     {
         public string ID;

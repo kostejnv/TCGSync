@@ -14,26 +14,43 @@ using TCGSync.Entities;
 
 namespace GoogleCalendarCommunication
 {
-    class GBrooker : IBrooker
+    /// <summary>
+    /// Brooker that can communicate with Google Calendar
+    /// </summary>
+    sealed class GBrooker : IBrooker
     {
-        private CalendarService GService;
-        static string[] Scopes = { CalendarService.Scope.Calendar };
-        static string ApplicationName = "TCGSync";
+        /// <summary>
+        /// Data servis for access to Google Calendar database
+        /// </summary>
+        private readonly CalendarService GService;
+        /// <summary>
+        /// Google Calendar permissions for this application
+        /// </summary>
+        public static readonly string[] Scopes = { CalendarService.Scope.Calendar };
+        /// <summary>
+        /// Application name for Google Uses
+        /// </summary>
+        private static readonly string ApplicationName = "TCGSync";
 
-        public GBrooker(string username)
+        /// <summary>
+        /// Constructor that create access to user's Google Calendar
+        /// </summary>
+        /// <param name="user">Google Calendar owner</param>
+        public GBrooker(User user)
         {
             UserCredential credential;
 
             using (var stream =
                 new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
             {
-                // The file googleToken stores the user's access and refresh tokens, and is created
-                // automatically when the authorization flow completes for the first time.
+                // Name of folder that contains authentification tokens
                 string credPath = "googleToken";
+
+                // This method try to find user's token, if failed create new one to credPath folder after log in Google
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
                     Scopes,
-                    username,
+                    user.TCUsername, //>Unique user's identificator which is connected with authentification token, for our purpose Time Cockpit Username
                     CancellationToken.None,
                     new FileDataStore(credPath, true)).Result;                
             }
@@ -44,7 +61,12 @@ namespace GoogleCalendarCommunication
                 ApplicationName = ApplicationName,
             });
         }
-
+        /// <summary>
+        /// Get Hashset of events from user's Google Calendar in the interval
+        /// </summary>
+        /// <param name="start">Start of time interval</param>
+        /// <param name="end">End of time interval</param>
+        /// <returns></returns>
         public HashSet<EventAbstract> GetEvents(DateTime start, DateTime end)
         {
             // Define parameters of request.
@@ -65,7 +87,11 @@ namespace GoogleCalendarCommunication
 
 
         }
-
+        /// <summary>
+        /// Add new event in google calendar
+        /// </summary>
+        /// <param name="event1">added event</param>
+        /// <returns>ID of event in google calendar</returns>
         public string CreateEvent(EventAbstract event1)
         {
             var googleEvent = event1.ToGoogleEvent();
@@ -74,7 +100,10 @@ namespace GoogleCalendarCommunication
             return response.Id;
 
         }
-
+        /// <summary>
+        /// Edit Event with the same ID
+        /// </summary>
+        /// <param name="event1">Event with changes</param>
         public void SetEvent(EventAbstract event1)
         {
             EventsResource.GetRequest getRequest = new EventsResource.GetRequest(GService, "primary", event1.ID);
@@ -87,10 +116,15 @@ namespace GoogleCalendarCommunication
         }
     }
 
-
-    class GoogleEvent : EventAbstract
+    /// <summary>
+    /// Event with specific parameter for Google Calendar
+    /// </summary>
+    sealed class GoogleEvent : EventAbstract
     {
-
+        /// <summary>
+        /// Constructor that creates GoogleEvent from Google Calendar Event
+        /// </summary>
+        /// <param name="event1">Google Calendar Event</param>
         internal GoogleEvent(Event event1)
         {
             ID = event1.Id;
@@ -99,13 +133,20 @@ namespace GoogleCalendarCommunication
             Description = event1.Description;
         }
     }
-    
+
     static class EventAbstractExtension
     {
+        /// <summary>
+        /// Extension method that converse EventAbstract to GoogleEvent
+        /// </summary>
+        /// <param name="event1"></param>
+        /// <returns></returns>
         internal static Event ToGoogleEvent(this EventAbstract event1)
             => new Event
-                { Start = new EventDateTime() { DateTime = event1.Start },
+            {       
+                Start = new EventDateTime() { DateTime = event1.Start },
                 End = new EventDateTime() { DateTime = event1.End },
-                Description = event1.Description };
+                Description = event1.Description 
+            };
     }
 }

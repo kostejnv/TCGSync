@@ -38,7 +38,7 @@ namespace TCGSync.UserModifications
         public bool GoogleLogin()
         {
             if (NewUser.TCUsername == null) throw new InvalidOperationException("This operation is without UserName not supported");
-            GUtil.GLogin(NewUser.TCUsername);
+            GUtil.GLogin(NewUser);
             WasGLogin = true;
             return true;
         }

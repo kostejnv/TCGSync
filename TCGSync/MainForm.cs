@@ -32,7 +32,7 @@ namespace TCGSync.UI
 
         private void SetTimeButton_Click(object sender, EventArgs e)
         {
-            Synchronization.IntervalInMinutes = SyncIntervalBox.Value;
+            UserDatabase.IntervalInMinutes = SyncIntervalBox.Value;
         }
     }
 }

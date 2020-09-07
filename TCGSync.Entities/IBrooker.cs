@@ -17,7 +17,7 @@ namespace TCGSync.Entities
         /// <param name="start">Date when the interval starts</param>
         /// <param name="end">Date when the interval ends</param>
         /// <returns></returns>
-        HashSet<Event> GetEvents(DateTime start, DateTime end);
+        IEnumerable<Event> GetEvents(DateTime start, DateTime end);
         /// <summary>
         /// Add event to a calendar
         /// </summary>

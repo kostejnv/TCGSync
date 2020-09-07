@@ -54,5 +54,23 @@ namespace TCGSync.Entities
                 throw new ArgumentException("Event has not all parameters");
             }
         }
+
+        public override int GetHashCode()
+        {
+            return GoogleId.GetHashCode()
+                + TCId.GetHashCode()
+                + Start.GetHashCode()
+                + End.GetHashCode()
+                + Description.GetHashCode()
+                + Customer.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(obj is Event))
+                return false;
+            else
+                return GetHashCode() == ((Event)obj).GetHashCode();
+        }
     }
 }

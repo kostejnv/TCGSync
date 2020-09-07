@@ -17,7 +17,7 @@ namespace GoogleCalendarCommunication
     /// <summary>
     /// Brooker that can communicate with Google Calendar
     /// </summary>
-    sealed class GBrooker : IBrooker
+    public sealed class GBrooker : IBrooker
     {
         /// <summary>
         /// Data servis for access to Google Calendar database
@@ -67,7 +67,7 @@ namespace GoogleCalendarCommunication
         /// <param name="start">Start of time interval</param>
         /// <param name="end">End of time interval</param>
         /// <returns></returns>
-        public HashSet<TCGSync.Entities.Event> GetEvents(DateTime start, DateTime end)
+        public IEnumerable<TCGSync.Entities.Event> GetEvents(DateTime start, DateTime end)
         {
             // Define parameters of request.
             EventsResource.ListRequest request = GService.Events.List("primary");
@@ -78,12 +78,12 @@ namespace GoogleCalendarCommunication
 
             // List events.
             Events events = request.Execute();
-            var gHashset = new HashSet<TCGSync.Entities.Event>();
+            var glist = new List<TCGSync.Entities.Event>();
             foreach (var eventItem in events.Items)
             {
-                gHashset.Add(new GoogleEvent(eventItem));
+                glist.Add(new GoogleEvent(eventItem));
             }
-            return gHashset;
+            return glist;
 
 
         }
@@ -95,7 +95,7 @@ namespace GoogleCalendarCommunication
         public string CreateEvent(TCGSync.Entities.Event event1)
         {
             var googleEvent = event1.ToGoogleEvent();
-            EventsResource.InsertRequest request = new EventsResource.InsertRequest(GService, googleEvent, "primary");
+            var request = GService.Events.Insert(googleEvent, "primary");
             Google.Apis.Calendar.v3.Data.Event response = request.Execute();
             return response.Id;
 
@@ -130,7 +130,7 @@ namespace GoogleCalendarCommunication
             GoogleId = event1.Id;
             Start = event1.Start.DateTime;
             End = event1.End.DateTime;
-            Description = event1.Description;
+            Description = event1.Summary;
         }
     }
 
@@ -146,7 +146,7 @@ namespace GoogleCalendarCommunication
             {       
                 Start = new EventDateTime() { DateTime = event1.Start },
                 End = new EventDateTime() { DateTime = event1.End },
-                Description = event1.Description 
+                Summary = event1.Description 
             };
     }
 }

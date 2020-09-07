@@ -9,12 +9,7 @@ namespace TCGSync.Entities
     public class User
     {
         public string TCUsername;
-        private string _tcPassword;
-        public string TCPassword
-        {
-            protected get { return _tcPassword; }
-            set { _tcPassword = value; }
-        }
+        public string TCPassword;
         public string googleCalendarId = null;
 
         // What events was last synchronizated
@@ -45,7 +40,7 @@ namespace TCGSync.Entities
             TCPassword = dataArray[1];
             googleCalendarId = dataArray[2];
             PastSyncInterval = Int32.Parse(dataArray[3]);
-            if (dataArray[4]=="false")
+            if (dataArray[4] == "false")
             {
                 IsFutureSpecified = true;
                 _futureSyncInterval = null;
@@ -87,7 +82,6 @@ namespace TCGSync.Entities
             }
             return data.ToString();
         }
-        public override string ToString() => TCUsername;
 
         public void AddEvent(Event event1)
         {
@@ -95,5 +89,15 @@ namespace TCGSync.Entities
             EventsAccordingToGoogleId[event1.GoogleId] = event1;
             EventsAccordingToTCId[event1.TCId] = event1;
         }
+
+        public void ChangeEvent(Event event1)
+        {
+            var oldEvent = EventsAccordingToGoogleId[event1.GoogleId];
+            EventsAccordingToGoogleId[event1.GoogleId] = event1;
+            EventsAccordingToTCId[event1.TCId] = event1;
+            Events.Remove(oldEvent);
+            Events.Add(event1);
+        }
+        public override string ToString() => TCUsername;
     }
 }

@@ -12,7 +12,8 @@ namespace TCGSync
 {
     public static class UserDatabase
     {
-        private static List<User> userDatabase = new List<User>();
+        public static List<User> userDatabase = new List<User>();
+        public static decimal IntervalInMinutes = 15;
         public static ListBox listBox { private get; set; }
         private static object FileLocker = new object();
         public static void InitializeDatabase(ListBox viewToDatabase)

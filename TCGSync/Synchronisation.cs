@@ -13,7 +13,20 @@ namespace TCGSync
     public static class Synchronization
     {
         
-        public static Timer SyncTimer;
+        private static Timer SyncTimer;
+
+        public static void RunAutoSync()
+        {
+            if (SyncTimer != null)
+            {
+                SyncTimer.Stop();
+                SyncTimer.Dispose();
+            }
+            SyncTimer = new Timer((double)UserDatabase.IntervalInMinutes * 60000);
+            SyncTimer.Elapsed += Sync;
+            SyncTimer.AutoReset = true;
+            SyncTimer.Enabled = true;
+        } 
 
         public static void Sync()
         {
@@ -31,7 +44,12 @@ namespace TCGSync
                 UserDatabase.SaveChanges();
             }
         }
-        
+        public static void Sync(Object source, ElapsedEventArgs e)
+        {
+            Sync();
+        }
+
+
         private static void SyncTC(User user, DateTime start, DateTime end)
         {
             var tCBrooker = new TCBrooker(user);
@@ -119,8 +137,8 @@ namespace TCGSync
             var modifiedEvents = new List<Event>();
             foreach (var actualEvent in ActualEvents)
             {
-                if (oldEvents.ContainsKey(actualEvent.TCId)
-                    && !oldEvents[actualEvent.TCId].Equals(actualEvent))
+                if (oldEvents.ContainsKey(actualEvent.GoogleId)
+                    && !oldEvents[actualEvent.GoogleId].Equals(actualEvent))
                 {
                     modifiedEvents.Add(actualEvent);
                 }

@@ -39,20 +39,19 @@ namespace GoogleCalendarCommunication
         public GBrooker(User user)
         {
             UserCredential credential;
-
             using (var stream =
-                new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+                new FileStream("client_id.json", FileMode.Open, FileAccess.Read))
             {
                 // Name of folder that contains authentification tokens
-                string credPath = "googleToken";
+                string credPath = "google_token";
 
                 // This method try to find user's token, if failed create new one to credPath folder after log in Google
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
                     Scopes,
-                    user.TCUsername, //>Unique user's identificator which is connected with authentification token, for our purpose Time Cockpit Username
+                    user.TCUsername,
                     CancellationToken.None,
-                    new FileDataStore(credPath, true)).Result;                
+                    new FileDataStore(credPath, true)).Result;
             }
             // Create Google Calendar API service.
             GService = new CalendarService(new BaseClientService.Initializer()

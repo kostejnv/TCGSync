@@ -42,8 +42,8 @@ namespace TCGSync.Entities
             PastSyncInterval = Int32.Parse(dataArray[3]);
             if (dataArray[4] == "false")
             {
-                IsFutureSpecified = true;
-                _futureSyncInterval = null;
+                IsFutureSpecified = false;
+                _futureSyncInterval = null;                
             }
             else
             {

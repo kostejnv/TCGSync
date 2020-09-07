@@ -190,6 +190,7 @@
             this.SynchronizeButton.TabIndex = 7;
             this.SynchronizeButton.Text = "Sync Now";
             this.SynchronizeButton.UseVisualStyleBackColor = true;
+            this.SynchronizeButton.Click += new System.EventHandler(this.SynchronizeButton_Click);
             // 
             // SyncIntervalBox
             // 
@@ -244,6 +245,8 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.contextMenuStrip1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -274,7 +277,7 @@
         private System.Windows.Forms.Button DeleteButton;
         private System.Windows.Forms.Button CreateButton;
         private System.Windows.Forms.Button SynchronizeButton;
-        private System.Windows.Forms.NumericUpDown SyncIntervalBox;
+        public System.Windows.Forms.NumericUpDown SyncIntervalBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button SetTimeButton;
     }

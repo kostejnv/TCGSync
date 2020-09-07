@@ -22,7 +22,8 @@ namespace TCGSync
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MainForm mainForm = new MainForm();
-            UserDatabase.InitializeDatabase(mainForm.UserListBox);
+            UserDatabase.InitializeDatabase(mainForm.UserListBox, mainForm.SyncIntervalBox);
+            Synchronization.RunAutoSync();
             Application.Run(mainForm);
         }
 

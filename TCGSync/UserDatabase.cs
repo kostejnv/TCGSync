@@ -16,11 +16,12 @@ namespace TCGSync
         public static decimal IntervalInMinutes = 15;
         public static ListBox listBox { private get; set; }
         private static object FileLocker = new object();
-        public static void InitializeDatabase(ListBox viewToDatabase)
+        public static void InitializeDatabase(ListBox viewToDatabase, NumericUpDown intervalSyncDomain)
         {
             listBox = viewToDatabase;
             LoadDatabase();
             RefreshListBox();
+            intervalSyncDomain.Value = IntervalInMinutes;
         }
 
         private static void RefreshListBox()
@@ -35,9 +36,12 @@ namespace TCGSync
         }
         public static void AddUserToUserDatabase(User user)
         {
-            userDatabase.Add(user);
-            RefreshListBox();
-            SaveChanges();
+            lock (userDatabase)
+            {
+                userDatabase.Add(user);
+                RefreshListBox();
+                SaveChanges();
+            }
         }
 
         public static void SaveChanges()
@@ -46,6 +50,7 @@ namespace TCGSync
             {
                 using (StreamWriter sw = new StreamWriter("data"))
                 {
+                    sw.WriteLine(IntervalInMinutes);
                     foreach (var user in userDatabase)
                     {
                         sw.WriteLine(user.ToStore());
@@ -64,6 +69,7 @@ namespace TCGSync
                     using (var sr = new StreamReader("data"))
                     {
                         string line = null;
+                        if ((line = sr.ReadLine()) != null) IntervalInMinutes = Decimal.Parse(line);
                         while ((line = sr.ReadLine()) != null)
                         {
                             userDatabase.Add(new User(line));

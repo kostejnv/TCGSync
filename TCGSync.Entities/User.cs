@@ -8,23 +8,21 @@ namespace TCGSync.Entities
 {
     public class User
     {
-        private string _tcUsername;
-        public string TCUsername
-        {
-            get { return _tcUsername; }
-            set { _tcUsername = value; }
-        }
+        public string TCUsername;
         private string _tcPassword;
         public string TCPassword
         {
             protected get { return _tcPassword; }
             set { _tcPassword = value; }
         }
-        protected string TCpassword;
+        public string googleCalendarId = null;
 
         // What events was last synchronizated
-        public HashSet<string> LastGoggleEventsGuid = null;
-        public HashSet<string> LastTCEventsGuid = null;
+        List<Event> Events = new List<Event>();
+        public Dictionary<string, Event> EventsAccordingToGoogleId = new Dictionary<string, Event>();
+        public Dictionary<string, Event> EventsAccordingToTCId = new Dictionary<string, Event>();
+
+
         public int PastSyncInterval;
         public bool IsFutureSpecified = true;
         private int? _futureSyncInterval;
@@ -44,19 +42,24 @@ namespace TCGSync.Entities
             char[] separator = new char[1] { ';' };
             var dataArray = data.Split(separator);
             TCUsername = dataArray[0];
-            TCpassword = dataArray[1];
-            separator[0] = ',';
-            LastGoggleEventsGuid = new HashSet<string>();
-            var GEventsGuidsArr = dataArray[2].Split(separator);
-            foreach (var guid in GEventsGuidsArr)
+            TCPassword = dataArray[1];
+            googleCalendarId = dataArray[2];
+            PastSyncInterval = Int32.Parse(dataArray[3]);
+            if (dataArray[4]=="false")
             {
-                LastGoggleEventsGuid.Add(guid);
+                IsFutureSpecified = true;
+                _futureSyncInterval = null;
             }
-            LastTCEventsGuid = new HashSet<string>();
-            var TCEventsGuidsArr = dataArray[3].Split(separator);
-            foreach (var guid in TCEventsGuidsArr)
+            else
             {
-                LastTCEventsGuid.Add(guid);
+                FutureSyncInterval = Int32.Parse(dataArray[4]);
+            }
+            separator[0] = ',';
+            var eventArray = dataArray[5].Split(separator, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var strEvent in eventArray)
+            {
+                var event1 = new Event(strEvent);
+                AddEvent(event1);
             }
         }
         /// <summary>
@@ -68,26 +71,29 @@ namespace TCGSync.Entities
             StringBuilder data = new StringBuilder();
             data.Append(TCUsername);
             data.Append(";");
-            data.Append(TCpassword);
+            data.Append(TCPassword);
             data.Append(";");
-            if (LastGoggleEventsGuid == null || LastTCEventsGuid == null)
-                throw new NullReferenceException();
-            foreach (var guid in LastGoggleEventsGuid)
+            data.Append(googleCalendarId);
+            data.Append(";");
+            data.Append(PastSyncInterval);
+            data.Append(";");
+            if (IsFutureSpecified) data.Append(_futureSyncInterval);
+            else data.Append("false");
+            data.Append(";");
+            foreach (var event1 in Events)
             {
-                data.Append(guid.ToString());
+                data.Append(event1.ToString());
                 data.Append(",");
             }
-            data.Remove(data.Length - 1, 1);
-            data.Append(";");
-            foreach (var guid in LastTCEventsGuid)
-            {
-                data.Append(guid.ToString());
-                data.Append(",");
-            }
-            data.Remove(data.Length - 1, 1);
-            data.Append(";");
             return data.ToString();
         }
         public override string ToString() => TCUsername;
+
+        public void AddEvent(Event event1)
+        {
+            Events.Add(event1);
+            EventsAccordingToGoogleId[event1.GoogleId] = event1;
+            EventsAccordingToTCId[event1.TCId] = event1;
+        }
     }
 }

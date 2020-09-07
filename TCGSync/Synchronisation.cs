@@ -8,6 +8,8 @@ namespace TCGSync
 {
     public static class Synchronization
     {
+        public static decimal IntervalInMinutes = 15;
         
+            
     }
 }

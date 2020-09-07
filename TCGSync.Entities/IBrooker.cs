@@ -17,17 +17,17 @@ namespace TCGSync.Entities
         /// <param name="start">Date when the interval starts</param>
         /// <param name="end">Date when the interval ends</param>
         /// <returns></returns>
-        HashSet<EventAbstract> GetEvents(DateTime start, DateTime end);
+        HashSet<Event> GetEvents(DateTime start, DateTime end);
         /// <summary>
         /// Add event to a calendar
         /// </summary>
         /// <param name="event1">Added event</param>
         /// <returns></returns>
-        string CreateEvent(EventAbstract event1);
+        string CreateEvent(Event event1);
         /// <summary>
         /// Edit event in a calendar with the same ID
         /// </summary>
         /// <param name="event1">Edited event</param>
-        void SetEvent(EventAbstract event1);
+        void SetEvent(Event event1);
     }
 }

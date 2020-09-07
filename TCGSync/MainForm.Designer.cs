@@ -57,46 +57,48 @@
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.synchronizeToolStripMenuItem,
             this.newUserToolStripMenuItem,
             this.helpToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(139, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(158, 100);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // synchronizeToolStripMenuItem
             // 
             this.synchronizeToolStripMenuItem.Name = "synchronizeToolStripMenuItem";
-            this.synchronizeToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.synchronizeToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
             this.synchronizeToolStripMenuItem.Text = "Synchronize";
             // 
             // newUserToolStripMenuItem
             // 
             this.newUserToolStripMenuItem.Name = "newUserToolStripMenuItem";
-            this.newUserToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.newUserToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
             this.newUserToolStripMenuItem.Text = "New User";
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // menuStrip1
             // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(477, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(477, 28);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -108,47 +110,48 @@
             this.helpToolStripMenuItem1,
             this.exitToolStripMenuItem1});
             this.menuToolStripMenuItem.Name = "menuToolStripMenuItem";
-            this.menuToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
+            this.menuToolStripMenuItem.Size = new System.Drawing.Size(60, 24);
             this.menuToolStripMenuItem.Text = "Menu";
             // 
             // synchronizeToolStripMenuItem1
             // 
             this.synchronizeToolStripMenuItem1.Name = "synchronizeToolStripMenuItem1";
-            this.synchronizeToolStripMenuItem1.Size = new System.Drawing.Size(138, 22);
+            this.synchronizeToolStripMenuItem1.Size = new System.Drawing.Size(171, 26);
             this.synchronizeToolStripMenuItem1.Text = "Synchronize";
             // 
             // newUserToolStripMenuItem1
             // 
             this.newUserToolStripMenuItem1.Name = "newUserToolStripMenuItem1";
-            this.newUserToolStripMenuItem1.Size = new System.Drawing.Size(138, 22);
+            this.newUserToolStripMenuItem1.Size = new System.Drawing.Size(171, 26);
             this.newUserToolStripMenuItem1.Text = "New User";
             // 
             // helpToolStripMenuItem1
             // 
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(138, 22);
+            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(171, 26);
             this.helpToolStripMenuItem1.Text = "Help";
             // 
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(138, 22);
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(171, 26);
             this.exitToolStripMenuItem1.Text = "Exit";
             // 
             // statusStrip1
             // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 280);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 276);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(477, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(477, 26);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(151, 20);
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
             // UserListBox
@@ -210,7 +213,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 215);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(175, 13);
+            this.label1.Size = new System.Drawing.Size(204, 15);
             this.label1.TabIndex = 9;
             this.label1.Text = "Synchronization interval (in minutes)";
             // 
@@ -222,6 +225,7 @@
             this.SetTimeButton.TabIndex = 18;
             this.SetTimeButton.Text = "Set";
             this.SetTimeButton.UseVisualStyleBackColor = true;
+            this.SetTimeButton.Click += new System.EventHandler(this.SetTimeButton_Click);
             // 
             // MainForm
             // 

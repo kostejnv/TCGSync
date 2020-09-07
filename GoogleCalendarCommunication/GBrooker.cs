@@ -67,7 +67,7 @@ namespace GoogleCalendarCommunication
         /// <param name="start">Start of time interval</param>
         /// <param name="end">End of time interval</param>
         /// <returns></returns>
-        public HashSet<EventAbstract> GetEvents(DateTime start, DateTime end)
+        public HashSet<TCGSync.Entities.Event> GetEvents(DateTime start, DateTime end)
         {
             // Define parameters of request.
             EventsResource.ListRequest request = GService.Events.List("primary");
@@ -78,7 +78,7 @@ namespace GoogleCalendarCommunication
 
             // List events.
             Events events = request.Execute();
-            var gHashset = new HashSet<EventAbstract>();
+            var gHashset = new HashSet<TCGSync.Entities.Event>();
             foreach (var eventItem in events.Items)
             {
                 gHashset.Add(new GoogleEvent(eventItem));
@@ -92,11 +92,11 @@ namespace GoogleCalendarCommunication
         /// </summary>
         /// <param name="event1">added event</param>
         /// <returns>ID of event in google calendar</returns>
-        public string CreateEvent(EventAbstract event1)
+        public string CreateEvent(TCGSync.Entities.Event event1)
         {
             var googleEvent = event1.ToGoogleEvent();
             EventsResource.InsertRequest request = new EventsResource.InsertRequest(GService, googleEvent, "primary");
-            Event response = request.Execute();
+            Google.Apis.Calendar.v3.Data.Event response = request.Execute();
             return response.Id;
 
         }
@@ -104,14 +104,14 @@ namespace GoogleCalendarCommunication
         /// Edit Event with the same ID
         /// </summary>
         /// <param name="event1">Event with changes</param>
-        public void SetEvent(EventAbstract event1)
+        public void SetEvent(TCGSync.Entities.Event event1)
         {
-            EventsResource.GetRequest getRequest = new EventsResource.GetRequest(GService, "primary", event1.ID);
-            Event googleEvent = getRequest.Execute();
+            EventsResource.GetRequest getRequest = new EventsResource.GetRequest(GService, "primary", event1.GoogleId);
+            Google.Apis.Calendar.v3.Data.Event googleEvent = getRequest.Execute();
             googleEvent.Start = new EventDateTime() { DateTime = event1.Start };
             googleEvent.End = new EventDateTime() { DateTime = event1.End };
             googleEvent.Description = event1.Description;
-            EventsResource.UpdateRequest updateRequest = new EventsResource.UpdateRequest(GService, googleEvent, "primary", event1.ID);
+            EventsResource.UpdateRequest updateRequest = new EventsResource.UpdateRequest(GService, googleEvent, "primary", event1.GoogleId);
             updateRequest.Execute();
         }
     }
@@ -119,15 +119,15 @@ namespace GoogleCalendarCommunication
     /// <summary>
     /// Event with specific parameter for Google Calendar
     /// </summary>
-    sealed class GoogleEvent : EventAbstract
+    sealed class GoogleEvent : TCGSync.Entities.Event
     {
         /// <summary>
         /// Constructor that creates GoogleEvent from Google Calendar Event
         /// </summary>
         /// <param name="event1">Google Calendar Event</param>
-        internal GoogleEvent(Event event1)
+        internal GoogleEvent(Google.Apis.Calendar.v3.Data.Event event1)
         {
-            ID = event1.Id;
+            GoogleId = event1.Id;
             Start = event1.Start.DateTime;
             End = event1.End.DateTime;
             Description = event1.Description;
@@ -141,8 +141,8 @@ namespace GoogleCalendarCommunication
         /// </summary>
         /// <param name="event1"></param>
         /// <returns></returns>
-        internal static Event ToGoogleEvent(this EventAbstract event1)
-            => new Event
+        internal static Google.Apis.Calendar.v3.Data.Event ToGoogleEvent(this TCGSync.Entities.Event event1)
+            => new Google.Apis.Calendar.v3.Data.Event
             {       
                 Start = new EventDateTime() { DateTime = event1.Start },
                 End = new EventDateTime() { DateTime = event1.End },

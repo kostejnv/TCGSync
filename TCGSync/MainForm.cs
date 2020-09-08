@@ -70,5 +70,15 @@ namespace TCGSync.UI
             var deleter = new UserModifications.UserDeleter(user);
             deleter.DeleteUser();
         }
+
+        private void synchronizeToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Synchronization.Sync();
+        }
+
+        private void newUserToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            CreateButton_Click(sender, e);
+        }
     }
 }

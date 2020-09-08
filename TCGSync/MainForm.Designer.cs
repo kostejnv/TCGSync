@@ -117,25 +117,27 @@
             // synchronizeToolStripMenuItem1
             // 
             this.synchronizeToolStripMenuItem1.Name = "synchronizeToolStripMenuItem1";
-            this.synchronizeToolStripMenuItem1.Size = new System.Drawing.Size(138, 22);
-            this.synchronizeToolStripMenuItem1.Text = "Synchronize";
+            this.synchronizeToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.synchronizeToolStripMenuItem1.Text = "Sync Now";
+            this.synchronizeToolStripMenuItem1.Click += new System.EventHandler(this.synchronizeToolStripMenuItem1_Click);
             // 
             // newUserToolStripMenuItem1
             // 
             this.newUserToolStripMenuItem1.Name = "newUserToolStripMenuItem1";
-            this.newUserToolStripMenuItem1.Size = new System.Drawing.Size(138, 22);
+            this.newUserToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.newUserToolStripMenuItem1.Text = "New User";
+            this.newUserToolStripMenuItem1.Click += new System.EventHandler(this.newUserToolStripMenuItem1_Click);
             // 
             // helpToolStripMenuItem1
             // 
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(138, 22);
+            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.helpToolStripMenuItem1.Text = "Help";
             // 
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(138, 22);
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
             // 
             // statusStrip1

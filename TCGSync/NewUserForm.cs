@@ -18,7 +18,7 @@ namespace TCGSync.UI
         public NewUserForm()
         {
             InitializeComponent();
-            userCreator = new UserCreator();
+            userCreator = new UserCreator(this);
         }
 
         private void VerifyButton_Click(object sender, EventArgs e)
@@ -44,6 +44,8 @@ namespace TCGSync.UI
             {
                 GoogleButton.BackColor = Color.LightGreen;
                 CreateNewUserButton.Enabled = true;
+                CalendarsBox.Enabled = true;
+                NewCalendarBox.Enabled = true;
             }
             else
             {
@@ -83,6 +85,12 @@ namespace TCGSync.UI
         private void CancelButton_Click(object sender, EventArgs e)
         {
             Dispose();
+        }
+
+        private void NewCalendarBox_TextChanged(object sender, EventArgs e)
+        {
+            if (NewCalendarBox.Text != "") CalendarsBox.Enabled = false;
+            else CalendarsBox.Enabled = true;
         }
     }
 }

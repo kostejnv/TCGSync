@@ -19,6 +19,7 @@ namespace GoogleCalendarCommunication
     /// </summary>
     public sealed class GBrooker : IBrooker
     {
+        User user;
         /// <summary>
         /// Data servis for access to Google Calendar database
         /// </summary>
@@ -27,10 +28,6 @@ namespace GoogleCalendarCommunication
         /// Google Calendar permissions for this application
         /// </summary>
         public static readonly string[] Scopes = { CalendarService.Scope.Calendar };
-        /// <summary>
-        /// Application name for Google Uses
-        /// </summary>
-        private static readonly string ApplicationName = "TCGSync";
 
         /// <summary>
         /// Constructor that create access to user's Google Calendar
@@ -38,25 +35,10 @@ namespace GoogleCalendarCommunication
         /// <param name="user">Google Calendar owner</param>
         public GBrooker(User user)
         {
-            UserCredential credential;
-            using (var stream =
-                new FileStream("client_id.json", FileMode.Open, FileAccess.Read))
-            {
-
-                // This method try to find user's token, if failed create new one to credPath folder after log in Google
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.Load(stream).Secrets,
-                    Scopes,
-                    user.TCUsername,
-                    CancellationToken.None,
-                    new FileDataStore(GUtil.TokenDirectory, true)).Result;
-            }
+            this.user = user;
+            UserCredential credential = GUtil.GetCredentials(user);
             // Create Google Calendar API service.
-            GService = new CalendarService(new BaseClientService.Initializer()
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = ApplicationName,
-            });
+            GService = GUtil.GetCalendarService(credential);
         }
         /// <summary>
         /// Get Hashset of events from user's Google Calendar in the interval
@@ -67,7 +49,7 @@ namespace GoogleCalendarCommunication
         public IEnumerable<TCGSync.Entities.Event> GetEvents(DateTime start, DateTime end)
         {
             // Define parameters of request.
-            EventsResource.ListRequest request = GService.Events.List("primary");
+            EventsResource.ListRequest request = GService.Events.List(user.googleCalendarId);
             request.TimeMin = start;
             request.TimeMax = end;
             request.ShowDeleted = false;
@@ -92,7 +74,7 @@ namespace GoogleCalendarCommunication
         public string CreateEvent(TCGSync.Entities.Event event1)
         {
             var googleEvent = event1.ToGoogleEvent();
-            var request = GService.Events.Insert(googleEvent, "primary");
+            var request = GService.Events.Insert(googleEvent, user.googleCalendarId);
             Google.Apis.Calendar.v3.Data.Event response = request.Execute();
             return response.Id;
 
@@ -103,12 +85,12 @@ namespace GoogleCalendarCommunication
         /// <param name="event1">Event with changes</param>
         public void SetEvent(TCGSync.Entities.Event event1)
         {
-            EventsResource.GetRequest getRequest = new EventsResource.GetRequest(GService, "primary", event1.GoogleId);
+            EventsResource.GetRequest getRequest = new EventsResource.GetRequest(GService, user.googleCalendarId, event1.GoogleId);
             Google.Apis.Calendar.v3.Data.Event googleEvent = getRequest.Execute();
             googleEvent.Start = new EventDateTime() { DateTime = event1.Start };
             googleEvent.End = new EventDateTime() { DateTime = event1.End };
             googleEvent.Description = event1.Description;
-            EventsResource.UpdateRequest updateRequest = new EventsResource.UpdateRequest(GService, googleEvent, "primary", event1.GoogleId);
+            EventsResource.UpdateRequest updateRequest = new EventsResource.UpdateRequest(GService, googleEvent, user.googleCalendarId, event1.GoogleId);
             updateRequest.Execute();
         }
     }

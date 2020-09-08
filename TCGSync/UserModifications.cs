@@ -7,6 +7,7 @@ using TCGSync.Entities;
 using TimeCockpitCommunication;
 using GoogleCalendarCommunication;
 using System.Windows.Forms;
+using TCGSync.UI;
 
 namespace TCGSync.UserModifications
 {
@@ -16,13 +17,15 @@ namespace TCGSync.UserModifications
         private bool WasTCVerify;
         private bool WasGLogin;
         private bool WaSSetSetting;
+        private NewUserForm Form;
 
-        public UserCreator()
+        public UserCreator(NewUserForm form)
         {
             NewUser = new User();
             WasTCVerify = false;
             WasGLogin = false;
             WaSSetSetting = false;
+            Form = form;
         }
 
         public bool TCVerify(string username, string password)
@@ -41,6 +44,11 @@ namespace TCGSync.UserModifications
             if (NewUser.TCUsername == null) throw new InvalidOperationException("This operation is without UserName not supported");
             GUtil.GLogin(NewUser);
             WasGLogin = true;
+            var calendars = GUtil.GetCalendars(NewUser);
+            foreach (var calendar in calendars)
+            {
+                Form.CalendarsBox.Items.Add(calendar);
+            }
             return true;
         }
         public void SetSetting(int pastSyncInterval, bool isFutureSpecified, int futureSyncInterval)
@@ -48,7 +56,15 @@ namespace TCGSync.UserModifications
             NewUser.PastSyncInterval = pastSyncInterval;
             NewUser.IsFutureSpecified = isFutureSpecified;
             NewUser.FutureSyncInterval = futureSyncInterval;
-            //
+            if (Form.NewCalendarBox.Text != "")
+                NewUser.googleCalendarId = GUtil.CreateNewCalendar(NewUser, Form.NewCalendarBox.Text);
+            else
+            {
+                if (Form.CalendarsBox.SelectedItem != null)
+                    NewUser.googleCalendarId = ((CalendarInfo)(Form.CalendarsBox.SelectedItem)).ID;
+                else
+                    WaSSetSetting = false;
+            }
             WaSSetSetting = true;
         }
         public User GetUser()

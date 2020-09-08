@@ -46,6 +46,11 @@
             this.StartDomain = new System.Windows.Forms.NumericUpDown();
             this.EndDomain = new System.Windows.Forms.NumericUpDown();
             this.WaitLabel = new System.Windows.Forms.Label();
+            this.CalendarsBox = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.NewCalendarBox = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.StartDomain)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.EndDomain)).BeginInit();
             this.SuspendLayout();
@@ -224,11 +229,63 @@
             this.WaitLabel.Text = "Please wait...";
             this.WaitLabel.Visible = false;
             // 
+            // CalendarsBox
+            // 
+            this.CalendarsBox.Enabled = false;
+            this.CalendarsBox.FormattingEnabled = true;
+            this.CalendarsBox.Location = new System.Drawing.Point(310, 152);
+            this.CalendarsBox.MaxDropDownItems = 50;
+            this.CalendarsBox.Name = "CalendarsBox";
+            this.CalendarsBox.Size = new System.Drawing.Size(174, 21);
+            this.CalendarsBox.TabIndex = 35;
+            this.CalendarsBox.Text = "(select)";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(314, 131);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(169, 13);
+            this.label4.TabIndex = 36;
+            this.label4.Text = "Select calendar to synchronisation";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(348, 178);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(93, 13);
+            this.label5.TabIndex = 37;
+            this.label5.Text = "or create new one";
+            // 
+            // NewCalendarBox
+            // 
+            this.NewCalendarBox.Enabled = false;
+            this.NewCalendarBox.Location = new System.Drawing.Point(351, 198);
+            this.NewCalendarBox.Name = "NewCalendarBox";
+            this.NewCalendarBox.Size = new System.Drawing.Size(132, 20);
+            this.NewCalendarBox.TabIndex = 38;
+            this.NewCalendarBox.TextChanged += new System.EventHandler(this.NewCalendarBox_TextChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(307, 201);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(38, 13);
+            this.label6.TabIndex = 39;
+            this.label6.Text = "Name:";
+            // 
             // NewUserForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(543, 348);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.NewCalendarBox);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.CalendarsBox);
             this.Controls.Add(this.WaitLabel);
             this.Controls.Add(this.EndDomain);
             this.Controls.Add(this.StartDomain);
@@ -276,5 +333,10 @@
         private System.Windows.Forms.NumericUpDown StartDomain;
         private System.Windows.Forms.NumericUpDown EndDomain;
         private System.Windows.Forms.Label WaitLabel;
+        public System.Windows.Forms.ComboBox CalendarsBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        public System.Windows.Forms.TextBox NewCalendarBox;
+        private System.Windows.Forms.Label label6;
     }
 }

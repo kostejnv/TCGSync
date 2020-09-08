@@ -30,6 +30,14 @@ namespace TCGSync.UserModifications
 
         public bool TCVerify(string username, string password)
         {
+            if (UserDatabase.ExistsUser(username))
+            {
+                MessageBox.Show
+                    ("There is the same username in database! Time Cockpit username is unique parameter and therefore it cannot be use more than once.",
+                    "Login failed",
+                    MessageBoxButtons.OK);
+                return false;
+            }
             if (TCUtils.VerifyAccount(username, password))
             {
                 NewUser.TCUsername = username;

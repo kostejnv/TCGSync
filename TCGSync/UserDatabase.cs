@@ -43,6 +43,7 @@ namespace TCGSync
                 SaveChanges();
             }
         }
+        public static bool ExistsUser(string username) => userDatabase.Where(u => u.TCUsername == username).Any();
 
         public static void SaveChanges()
         {

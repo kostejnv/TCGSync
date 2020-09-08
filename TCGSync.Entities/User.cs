@@ -18,6 +18,7 @@ namespace TCGSync.Entities
         public Dictionary<string, Event> EventsAccordingToTCId = new Dictionary<string, Event>();
 
 
+        public static readonly int MaxPastSyncInterval = 100;
         public int PastSyncInterval;
         public bool IsFutureSpecified = true;
         private int? _futureSyncInterval;
@@ -43,7 +44,7 @@ namespace TCGSync.Entities
             if (dataArray[4] == "false")
             {
                 IsFutureSpecified = false;
-                _futureSyncInterval = null;                
+                _futureSyncInterval = null;
             }
             else
             {
@@ -54,7 +55,10 @@ namespace TCGSync.Entities
             foreach (var strEvent in eventArray)
             {
                 var event1 = new Event(strEvent);
-                AddEvent(event1);
+
+                // Adding only "Actual" Events
+                if (event1.Start > DateTime.Now - TimeSpan.FromDays(User.MaxPastSyncInterval))
+                    AddEvent(event1);
             }
         }
         /// <summary>
@@ -118,7 +122,10 @@ namespace TCGSync.Entities
             private static string EncodeChar(char character)
             {
                 char encodeChar = (char)(character + Shift);
-                if (encodeChar == ';' || encodeChar == ',' || encodeChar == '|') encodeChar++;
+                if (encodeChar == ';') encodeChar = (char)33;
+                if (encodeChar == ',') encodeChar = (char)34;
+                if (encodeChar == '|') encodeChar = (char)35;
+                
                 return new string(new char[3] { encodeChar, GetRandomCharacter(), GetRandomCharacter() });
 
             }
@@ -126,16 +133,16 @@ namespace TCGSync.Entities
             {
                 lock (random)
                 {
-                    int randomChar = random.Next(33, 126);
+                    int randomChar = random.Next(36, 126);
                     if (randomChar == ';' || randomChar == ',' || randomChar == '|') randomChar++;
                     return (char)randomChar;
                 }
             }
             public static string Decode(string encodedText)
             {
-                if (encodedText.Length % 3 != 0) throw new ArgumentException("It do not decode");
+                if (encodedText.Length % 3 != 0) throw new ArgumentException("It cannot be decoded");
                 string decodedText = "";
-                for (int i = 0; i < encodedText.Length/3; i++)
+                for (int i = 0; i < encodedText.Length / 3; i++)
                 {
                     decodedText += DecodeChar(encodedText.Substring(i * 3, 3));
                 }
@@ -144,10 +151,12 @@ namespace TCGSync.Entities
             private static char DecodeChar(string character)
             {
                 char decodedChar = character[0];
-                if (decodedChar - 1 == ';' || decodedChar - 1 == ',' || decodedChar - 1 == '|') decodedChar--; 
+                if (decodedChar == 33) decodedChar = ';';
+                if (decodedChar == 34) decodedChar = ',';
+                if (decodedChar == 35) decodedChar = '|';
                 return (char)(decodedChar - Shift);
 
-            } 
+            }
         }
     }
 }

@@ -18,7 +18,7 @@ namespace TCGSync.Entities
 
         public Event(string data)
         {
-            char[] separator = new char[1] { '-' };
+            char[] separator = new char[1] { '|' };
             var splited = data.Split(separator);
             GoogleId = splited[0];
             TCId = splited[1];
@@ -37,15 +37,15 @@ namespace TCGSync.Entities
             {
                 StringBuilder sB = new StringBuilder();
                 sB.Append(GoogleId);
-                sB.Append("-");
+                sB.Append("|");
                 sB.Append(TCId);
-                sB.Append("-");
+                sB.Append("|");
                 sB.Append(Start.Value.Ticks);
-                sB.Append("-");
+                sB.Append("|");
                 sB.Append(End.Value.Ticks);
-                sB.Append("-");
+                sB.Append("|");
                 sB.Append(Description);
-                sB.Append("-");
+                sB.Append("|");
                 sB.Append(Customer);
                 return sB.ToString();
             }
@@ -55,22 +55,18 @@ namespace TCGSync.Entities
             }
         }
 
-        public override int GetHashCode()
-        {
-            return GoogleId.GetHashCode()
-                + TCId.GetHashCode()
-                + Start.GetHashCode()
-                + End.GetHashCode()
-                + Description.GetHashCode()
-                + Customer.GetHashCode();
-        }
 
         public override bool Equals(object obj)
         {
             if (obj == null || !(obj is Event))
                 return false;
             else
-                return GetHashCode() == ((Event)obj).GetHashCode();
+                return GoogleId == ((Event)obj).GoogleId
+                    && TCId == ((Event)obj).TCId
+                    && Start == ((Event)obj).Start
+                    && End == ((Event)obj).End
+                    && Description == ((Event)obj).Description
+                    && Customer == ((Event)obj).Customer;
         }
     }
 }

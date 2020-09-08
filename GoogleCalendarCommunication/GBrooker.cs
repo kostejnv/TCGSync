@@ -126,9 +126,11 @@ namespace GoogleCalendarCommunication
         /// <param name="event1">Google Calendar Event</param>
         internal GoogleEvent(Google.Apis.Calendar.v3.Data.Event event1)
         {
+            TimeZone localTimeZone = TimeZone.CurrentTimeZone;
+            TimeSpan currentOffset = localTimeZone.GetUtcOffset(DateTime.Now);
             GoogleId = event1.Id;
-            Start = event1.Start.DateTime;
-            End = event1.End.DateTime;
+            Start = event1.Start.DateTime + currentOffset;
+            End = event1.End.DateTime + currentOffset;
             Description = event1.Summary;
         }
     }

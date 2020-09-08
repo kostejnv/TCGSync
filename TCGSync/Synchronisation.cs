@@ -62,11 +62,11 @@ namespace TCGSync
                 var gID = gBrooker.CreateEvent(newEvent);
                 user.AddEvent(newEvent.WithGoogleID(gID));
             }
-            foreach (var modifiedEvent in modifiedEvents)
-            {
-                gBrooker.SetEvent(modifiedEvent);
-                user.ChangeEvent(modifiedEvent);
-            }
+            //foreach (var modifiedEvent in modifiedEvents)
+            //{
+            //    gBrooker.SetEvent(modifiedEvent);
+            //    user.ChangeEvent(modifiedEvent);
+            //}
 
         }
 
@@ -82,11 +82,11 @@ namespace TCGSync
                 var tcID = tCBrooker.CreateEvent(newEvent);
                 user.AddEvent(newEvent.WithTCID(tcID));
             }
-            foreach (var modifiedEvent in modifiedEvents)
-            {
-                tCBrooker.SetEvent(modifiedEvent);
-                user.ChangeEvent(modifiedEvent);
-            }
+            //foreach (var modifiedEvent in modifiedEvents)
+            //{
+            //    tCBrooker.SetEvent(modifiedEvent);
+            //    user.ChangeEvent(modifiedEvent);
+            //}
         }
 
         private static IEnumerable<Event> GetNewTCEvents(User user, IEnumerable<Event> ActualEvents)

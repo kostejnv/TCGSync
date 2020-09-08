@@ -77,7 +77,7 @@ namespace TCGSync.Entities
             data.Append(";");
             foreach (var event1 in Events)
             {
-                data.Append(event1.ToString());
+                data.Append(event1.ToStore());
                 data.Append(",");
             }
             return data.ToString();

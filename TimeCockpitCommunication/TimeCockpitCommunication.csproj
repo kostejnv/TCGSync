@@ -58,14 +58,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TCBrooker.cs" />
-    <Compile Include="TCUtils.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\TCService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.datasvcmap</DependentUpon>
     </Compile>
+    <Compile Include="TCBrooker.cs" />
+    <Compile Include="TCUtils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Service References\TCService\service.edmx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TCGSync.Entities\TCGSync.Entities.csproj">
+      <Project>{ffdf4876-37ea-439c-b09c-89d662c0ce8b}</Project>
+      <Name>TCGSync.Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -76,20 +86,10 @@
     </ServiceReferenceMetadataStorage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Service References\TCService\service.edmx" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Service References\TCService\Reference.datasvcmap">
       <Generator>DataServicesCoreClientGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TCGSync.Entities\TCGSync.Entities.csproj">
-      <Project>{ffdf4876-37ea-439c-b09c-89d662c0ce8b}</Project>
-      <Name>TCGSync.Entities</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

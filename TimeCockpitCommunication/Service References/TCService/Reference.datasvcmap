@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="64e334cd-84fe-4a98-ad52-2f906b3e272d" xmlns="urn:schemas-microsoft-com:xml-dataservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="6579c28c-aad0-4f6c-bc60-1394d7e2fc0c" xmlns="urn:schemas-microsoft-com:xml-dataservicemap">
   <MetadataSources>
     <MetadataSource Address="https://api.timecockpit.com/odata" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service.edmx" MetadataType="Edmx" ID="ba36fe41-f294-4ad6-90ca-e76c4b9c15a4" SourceId="1" SourceUrl="https://api.timecockpit.com/odata" />
+    <MetadataFile FileName="service.edmx" MetadataType="Edmx" ID="b00b775e-5a71-4edb-b3ff-b0420572ac3c" SourceId="1" SourceUrl="https://api.timecockpit.com/odata" />
   </Metadata>
   <Extensions />
   <Parameters>

@@ -56,6 +56,7 @@ namespace TCGSync
                         sw.WriteLine(user.ToStore());
                     }
                 }
+                RefreshListBox();
             }
 
         }

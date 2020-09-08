@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TCGSync.Entities;
 using TimeCockpitCommunication;
 using GoogleCalendarCommunication;
+using System.Windows.Forms;
 
 namespace TCGSync.UserModifications
 {
@@ -56,6 +57,29 @@ namespace TCGSync.UserModifications
             if (!WasGLogin) throw new InvalidOperationException("Google Login was not successful");
             if (!WaSSetSetting) throw new InvalidOperationException("Setting was not filled");
             return NewUser;
+        }
+    }
+
+    public class UserDeleter
+    {
+        User user;
+        public UserDeleter(User user)
+        {
+            this.user = user;
+        }
+
+        public void DeleteUser()
+        {
+            DialogResult result = MessageBox.Show(
+                string.Format("Do you want to really delete user {0}?", user.TCUsername),
+                "Delete User",
+                MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                UserDatabase.userDatabase.Remove(user);
+                GUtil.RemoveGoogleToken(user);
+                UserDatabase.SaveChanges();
+            }
         }
     }
 }

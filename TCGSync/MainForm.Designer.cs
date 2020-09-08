@@ -49,6 +49,7 @@
             this.SyncIntervalBox = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.SetTimeButton = new System.Windows.Forms.Button();
+            this.ChangeUserButton = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -64,31 +65,31 @@
             this.helpToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(158, 100);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(139, 92);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // synchronizeToolStripMenuItem
             // 
             this.synchronizeToolStripMenuItem.Name = "synchronizeToolStripMenuItem";
-            this.synchronizeToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
+            this.synchronizeToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.synchronizeToolStripMenuItem.Text = "Synchronize";
             // 
             // newUserToolStripMenuItem
             // 
             this.newUserToolStripMenuItem.Name = "newUserToolStripMenuItem";
-            this.newUserToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
+            this.newUserToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.newUserToolStripMenuItem.Text = "New User";
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // menuStrip1
@@ -98,7 +99,7 @@
             this.menuToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(477, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(477, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -110,31 +111,31 @@
             this.helpToolStripMenuItem1,
             this.exitToolStripMenuItem1});
             this.menuToolStripMenuItem.Name = "menuToolStripMenuItem";
-            this.menuToolStripMenuItem.Size = new System.Drawing.Size(60, 24);
+            this.menuToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.menuToolStripMenuItem.Text = "Menu";
             // 
             // synchronizeToolStripMenuItem1
             // 
             this.synchronizeToolStripMenuItem1.Name = "synchronizeToolStripMenuItem1";
-            this.synchronizeToolStripMenuItem1.Size = new System.Drawing.Size(171, 26);
+            this.synchronizeToolStripMenuItem1.Size = new System.Drawing.Size(138, 22);
             this.synchronizeToolStripMenuItem1.Text = "Synchronize";
             // 
             // newUserToolStripMenuItem1
             // 
             this.newUserToolStripMenuItem1.Name = "newUserToolStripMenuItem1";
-            this.newUserToolStripMenuItem1.Size = new System.Drawing.Size(171, 26);
+            this.newUserToolStripMenuItem1.Size = new System.Drawing.Size(138, 22);
             this.newUserToolStripMenuItem1.Text = "New User";
             // 
             // helpToolStripMenuItem1
             // 
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(171, 26);
+            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(138, 22);
             this.helpToolStripMenuItem1.Text = "Help";
             // 
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(171, 26);
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(138, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
             // 
             // statusStrip1
@@ -142,16 +143,16 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 276);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 280);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(477, 26);
+            this.statusStrip1.Size = new System.Drawing.Size(477, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(151, 20);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
             // UserListBox
@@ -161,6 +162,7 @@
             this.UserListBox.Name = "UserListBox";
             this.UserListBox.Size = new System.Drawing.Size(346, 147);
             this.UserListBox.TabIndex = 3;
+            this.UserListBox.SelectedIndexChanged += new System.EventHandler(this.UserListBox_SelectedIndexChanged);
             // 
             // DeleteButton
             // 
@@ -171,10 +173,11 @@
             this.DeleteButton.TabIndex = 5;
             this.DeleteButton.Text = "Delete";
             this.DeleteButton.UseVisualStyleBackColor = true;
+            this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
             // 
             // CreateButton
             // 
-            this.CreateButton.Location = new System.Drawing.Point(377, 127);
+            this.CreateButton.Location = new System.Drawing.Point(377, 95);
             this.CreateButton.Name = "CreateButton";
             this.CreateButton.Size = new System.Drawing.Size(88, 27);
             this.CreateButton.TabIndex = 6;
@@ -214,7 +217,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 215);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(204, 15);
+            this.label1.Size = new System.Drawing.Size(175, 13);
             this.label1.TabIndex = 9;
             this.label1.Text = "Synchronization interval (in minutes)";
             // 
@@ -228,11 +231,22 @@
             this.SetTimeButton.UseVisualStyleBackColor = true;
             this.SetTimeButton.Click += new System.EventHandler(this.SetTimeButton_Click);
             // 
+            // ChangeUserButton
+            // 
+            this.ChangeUserButton.Enabled = false;
+            this.ChangeUserButton.Location = new System.Drawing.Point(377, 131);
+            this.ChangeUserButton.Name = "ChangeUserButton";
+            this.ChangeUserButton.Size = new System.Drawing.Size(88, 27);
+            this.ChangeUserButton.TabIndex = 19;
+            this.ChangeUserButton.Text = "Change";
+            this.ChangeUserButton.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(477, 302);
+            this.Controls.Add(this.ChangeUserButton);
             this.Controls.Add(this.SetTimeButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.SyncIntervalBox);
@@ -280,6 +294,7 @@
         public System.Windows.Forms.NumericUpDown SyncIntervalBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button SetTimeButton;
+        private System.Windows.Forms.Button ChangeUserButton;
     }
 }
 

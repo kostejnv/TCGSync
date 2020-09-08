@@ -42,8 +42,6 @@ namespace GoogleCalendarCommunication
             using (var stream =
                 new FileStream("client_id.json", FileMode.Open, FileAccess.Read))
             {
-                // Name of folder that contains authentification tokens
-                string credPath = "google_token";
 
                 // This method try to find user's token, if failed create new one to credPath folder after log in Google
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
@@ -51,7 +49,7 @@ namespace GoogleCalendarCommunication
                     Scopes,
                     user.TCUsername,
                     CancellationToken.None,
-                    new FileDataStore(credPath, true)).Result;
+                    new FileDataStore(GUtil.TokenDirectory, true)).Result;
             }
             // Create Google Calendar API service.
             GService = new CalendarService(new BaseClientService.Initializer()

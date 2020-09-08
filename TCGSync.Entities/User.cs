@@ -98,6 +98,8 @@ namespace TCGSync.Entities
             Events.Remove(oldEvent);
             Events.Add(event1);
         }
+
+
         public override string ToString() => TCUsername;
 
         private static class BasicEncription

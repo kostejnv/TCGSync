@@ -49,5 +49,26 @@ namespace TCGSync.UI
         {
             Synchronization.Sync();
         }
+
+        private void UserListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (UserListBox.SelectedItems.Count == 1)
+            {
+                DeleteButton.Enabled = true;
+                ChangeUserButton.Enabled = true;
+            }
+            else
+            {
+                DeleteButton.Enabled = false;
+                ChangeUserButton.Enabled = false;
+            }
+        }
+
+        private void DeleteButton_Click(object sender, EventArgs e)
+        {
+            User user = (User)UserListBox.SelectedItem;
+            var deleter = new UserModifications.UserDeleter(user);
+            deleter.DeleteUser();
+        }
     }
 }

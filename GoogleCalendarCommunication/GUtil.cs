@@ -23,6 +23,7 @@ namespace GoogleCalendarCommunication
         /// Google Calendar permissions for this application
         /// </summary>
         static readonly string[] Scopes = GBrooker.Scopes;
+        public static readonly string TokenDirectory = "google_token";
 
         /// <summary>
         /// Log in Google Calendar
@@ -37,8 +38,6 @@ namespace GoogleCalendarCommunication
                 using (var stream =
                     new FileStream("client_id.json", FileMode.Open, FileAccess.Read))
                 {
-                    // Name of folder that contains authentification tokens
-                    string credPath = "google_token";
 
                     // This method try to find user's token, if failed create new one to credPath folder after log in Google
                     credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
@@ -46,7 +45,7 @@ namespace GoogleCalendarCommunication
                         Scopes,
                         user.TCUsername,
                         CancellationToken.None,
-                        new FileDataStore(credPath, true)).Result;
+                        new FileDataStore(TokenDirectory, true)).Result;
                 }
                 return true;
             }
@@ -54,6 +53,15 @@ namespace GoogleCalendarCommunication
             {
                 return false;
             }
+
+            
+        }
+
+        public static void RemoveGoogleToken(User user)
+        {
+            string[] files = Directory.GetFiles(TokenDirectory);
+            string tokenName = files.Where(f => f.Contains(user.TCUsername)).First();
+            File.Delete(tokenName);
         }
 
     }

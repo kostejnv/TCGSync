@@ -45,6 +45,7 @@
             this.EnableLoginLabel = new System.Windows.Forms.Label();
             this.StartDomain = new System.Windows.Forms.NumericUpDown();
             this.EndDomain = new System.Windows.Forms.NumericUpDown();
+            this.WaitLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.StartDomain)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.EndDomain)).BeginInit();
             this.SuspendLayout();
@@ -213,11 +214,22 @@
             0,
             0});
             // 
+            // WaitLabel
+            // 
+            this.WaitLabel.AutoSize = true;
+            this.WaitLabel.Location = new System.Drawing.Point(67, 119);
+            this.WaitLabel.Name = "WaitLabel";
+            this.WaitLabel.Size = new System.Drawing.Size(70, 13);
+            this.WaitLabel.TabIndex = 34;
+            this.WaitLabel.Text = "Please wait...";
+            this.WaitLabel.Visible = false;
+            // 
             // NewUserForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(543, 348);
+            this.Controls.Add(this.WaitLabel);
             this.Controls.Add(this.EndDomain);
             this.Controls.Add(this.StartDomain);
             this.Controls.Add(this.EnableLoginLabel);
@@ -263,5 +275,6 @@
         private System.Windows.Forms.Label EnableLoginLabel;
         private System.Windows.Forms.NumericUpDown StartDomain;
         private System.Windows.Forms.NumericUpDown EndDomain;
+        private System.Windows.Forms.Label WaitLabel;
     }
 }

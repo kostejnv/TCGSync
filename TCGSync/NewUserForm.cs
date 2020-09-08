@@ -23,6 +23,7 @@ namespace TCGSync.UI
 
         private void VerifyButton_Click(object sender, EventArgs e)
         {
+            WaitLabel.Visible = true;
             if (userCreator.TCVerify(TCUserNameTextBox.Text,TCPasswordTextBox.Text))
             {
                 TCUserNameTextBox.BackColor = Color.LightGreen;
@@ -34,6 +35,7 @@ namespace TCGSync.UI
                 TCUserNameTextBox.BackColor = Color.OrangeRed;
                 TCPasswordTextBox.BackColor = Color.OrangeRed;
             }
+            WaitLabel.Visible = false;
         }
 
         private void GoogleButton_Click(object sender, EventArgs e)

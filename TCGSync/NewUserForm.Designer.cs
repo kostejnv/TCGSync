@@ -142,6 +142,7 @@
             // 
             this.TCPasswordTextBox.Location = new System.Drawing.Point(97, 88);
             this.TCPasswordTextBox.Name = "TCPasswordTextBox";
+            this.TCPasswordTextBox.PasswordChar = '•';
             this.TCPasswordTextBox.Size = new System.Drawing.Size(123, 20);
             this.TCPasswordTextBox.TabIndex = 29;
             // 

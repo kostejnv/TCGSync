@@ -11,6 +11,7 @@ namespace TCGSync.Entities
         public string TCUsername;
         public string TCPassword;
         public string googleCalendarId = null;
+        public string Fullname { private get; set; }
 
         // What events was last synchronizated
         List<Event> Events = new List<Event>();
@@ -51,7 +52,8 @@ namespace TCGSync.Entities
                 FutureSyncInterval = Int32.Parse(dataArray[4]);
             }
             separator[0] = ',';
-            var eventArray = dataArray[5].Split(separator, StringSplitOptions.RemoveEmptyEntries);
+            Fullname = dataArray[5];
+            var eventArray = dataArray[6].Split(separator, StringSplitOptions.RemoveEmptyEntries);
             foreach (var strEvent in eventArray)
             {
                 var event1 = new Event(strEvent);
@@ -79,6 +81,8 @@ namespace TCGSync.Entities
             if (IsFutureSpecified) data.Append(_futureSyncInterval);
             else data.Append("false");
             data.Append(";");
+            data.Append(Fullname);
+            data.Append(";");
             foreach (var event1 in Events)
             {
                 data.Append(event1.ToStore());
@@ -104,7 +108,7 @@ namespace TCGSync.Entities
         }
 
 
-        public override string ToString() => TCUsername;
+        public override string ToString() => string.Format("{0}  ({1})", Fullname, TCUsername);
 
         private static class BasicEncription
         {

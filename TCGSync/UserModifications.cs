@@ -42,6 +42,7 @@ namespace TCGSync.UserModifications
             {
                 NewUser.TCUsername = username;
                 NewUser.TCPassword = password;
+                NewUser.Fullname = TCUtils.GetFullname(NewUser);
                 WasTCVerify = true;
                 return true;
             }
@@ -95,7 +96,7 @@ namespace TCGSync.UserModifications
         public void DeleteUser()
         {
             DialogResult result = MessageBox.Show(
-                string.Format("Do you want to really delete user {0}?", user.TCUsername),
+                string.Format("Do you want to really delete user {0}?", user.ToString()),
                 "Delete User",
                 MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)

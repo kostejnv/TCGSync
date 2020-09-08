@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TimeCockpitCommunication.TCService;
 using System.Net;
+using TCGSync.Entities;
 
 namespace TimeCockpitCommunication
 {
@@ -30,6 +31,14 @@ namespace TimeCockpitCommunication
             {
                 return false;
             }
+        }
+
+        public static string GetFullname(User user)
+        {
+            var service = new DataService(new Uri("https://apipreview.timecockpit.com/odata", UriKind.Absolute));
+            service.Credentials = new NetworkCredential(user.TCUsername, user.TCPassword);
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            return service.APP_UserDetail.Where(u => u.APP_Username == user.TCUsername).First().APP_Fullname;
         }
     }
 }

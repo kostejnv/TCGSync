@@ -321,6 +321,6 @@
         private System.Windows.Forms.Label StartLabel;
         private System.Windows.Forms.CheckBox EndSpecifiedCheckBox;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label EmailLabel;
+        public System.Windows.Forms.Label EmailLabel;
     }
 }

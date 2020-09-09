@@ -12,6 +12,7 @@ namespace TCGSync.Entities
         public string TCPassword;
         public string googleCalendarId = null;
         public string Fullname { private get; set; }
+        public string GoogleEmail { private get; set; } = "";
 
         // What events was last synchronizated
         public List<Event> Events = new List<Event>();
@@ -51,9 +52,10 @@ namespace TCGSync.Entities
             {
                 FutureSyncInterval = Int32.Parse(dataArray[4]);
             }
-            separator[0] = ',';
             Fullname = dataArray[5];
-            var eventArray = dataArray[6].Split(separator, StringSplitOptions.RemoveEmptyEntries);
+            GoogleEmail = dataArray[6];
+            separator[0] = ',';
+            var eventArray = dataArray[7].Split(separator, StringSplitOptions.RemoveEmptyEntries);
             foreach (var strEvent in eventArray)
             {
                 var event1 = new Event(strEvent);
@@ -70,6 +72,7 @@ namespace TCGSync.Entities
             user.TCPassword = TCPassword;
             user.googleCalendarId = googleCalendarId;
             user.Fullname = Fullname;
+            user.GoogleEmail = GoogleEmail;
             user.PastSyncInterval = PastSyncInterval;
             user.IsFutureSpecified = IsFutureSpecified;
             user.FutureSyncInterval = FutureSyncInterval;
@@ -99,6 +102,8 @@ namespace TCGSync.Entities
             data.Append(";");
             data.Append(Fullname);
             data.Append(";");
+            data.Append(GoogleEmail);
+            data.Append(";");
             foreach (var event1 in Events)
             {
                 data.Append(event1.ToStore());
@@ -124,7 +129,11 @@ namespace TCGSync.Entities
         }
 
 
-        public override string ToString() => string.Format("{0}  ({1})", Fullname, TCUsername);
+        public override string ToString()
+        {
+            if (GoogleEmail != "") return string.Format("{0}  ({1})", Fullname, GoogleEmail);
+            else return string.Format("{0}", Fullname);
+        }
 
         private static class BasicEncription
         {

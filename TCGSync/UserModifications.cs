@@ -90,6 +90,7 @@ namespace TCGSync.UserModifications
             if (!WaSSetSetting) throw new InvalidOperationException("Setting was not filled");
             if (UserDatabase.ExistsUser(NewUser.TCUsername))
                 throw new InvalidOperationException("There is the same username in database! Time Cockpit username is unique parameter and therefore it cannot be use more than once.");
+            NewUser.GoogleEmail = GUtil.GetEmail(NewUser);
             return NewUser;
         }
     }
@@ -176,6 +177,7 @@ namespace TCGSync.UserModifications
             }
             Form.CalendarsBox.Invoke(new Action(() => Form.CalendarsBox.SelectedIndex = -1));
             Form.CalendarsBox.Invoke(new Action(() => Form.CalendarsBox.Text = "(select)"));
+            Form.EmailLabel.Invoke(new Action(() => Form.EmailLabel.Text = GetGoogleEmail()));
             return true;
         }
         public void SetSetting(int pastSyncInterval, bool isFutureSpecified, int futureSyncInterval)
@@ -211,6 +213,7 @@ namespace TCGSync.UserModifications
                     ChangingUser.Events = OldUser.Events;
                     ChangeGoogleToken();
                     UserDatabase.userDatabase.Remove(OldUser);
+                    ChangingUser.GoogleEmail = GetGoogleEmail();
                     UserDatabase.AddUserToUserDatabase(ChangingUser);
                 }
             }

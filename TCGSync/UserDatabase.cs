@@ -78,21 +78,32 @@ namespace TCGSync
         {
             lock (FileDatabaseLocker)
             {
-                if (File.Exists("data"))
+                try
                 {
-                    using (var sr = new StreamReader("data"))
+                    if (File.Exists("data"))
                     {
-                        string line = null;
-                        if ((line = sr.ReadLine()) != null) IntervalInMinutes = Decimal.Parse(line);
-                        lock (userDatabase)
+                        using (var sr = new StreamReader("data"))
                         {
-                            while ((line = sr.ReadLine()) != null)
+                            string line = null;
+                            if ((line = sr.ReadLine()) != null) IntervalInMinutes = Decimal.Parse(line);
+                            lock (userDatabase)
                             {
-                                userDatabase.Add(new User(line));
+                                while ((line = sr.ReadLine()) != null)
+                                {
+                                    userDatabase.Add(new User(line));
+                                }
                             }
                         }
+                        RefreshListBox();
                     }
-                    RefreshListBox();
+                }
+                catch (Exception ex)
+                {
+                    var result = MessageBox.Show(string.Format(
+                        "The database failed to load because '{0}'. If you press cancel, it is possible that data will be deleted (from database, not from calendars)", ex.Message),
+                        "TCGSync Error",
+                        MessageBoxButtons.RetryCancel);
+                    if (result == DialogResult.Retry) LoadDatabase();
                 }
             }
         }

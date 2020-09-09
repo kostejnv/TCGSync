@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using TCGSync.Entities;
 
 namespace GoogleCalendarCommunication
@@ -33,22 +34,21 @@ namespace GoogleCalendarCommunication
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public static bool GLogin(User user)
+        public static bool GLogin(User user, string path)
         {
             try
             {
-                GetCredentials(user);
+                GetCredentials(user, path);
                 return true;
             }
             catch (System.AggregateException)
             {
                 return false;
             }
-
-            
         }
+        public static bool GLogin(User user) => GLogin(user, TokenDirectory);
 
-        public static UserCredential GetCredentials(User user)
+        public static UserCredential GetCredentials(User user, string path)
         {
             UserCredential credential;
             using (var stream =
@@ -61,10 +61,12 @@ namespace GoogleCalendarCommunication
                     Scopes,
                     user.TCUsername,
                     CancellationToken.None,
-                    new FileDataStore(TokenDirectory, true)).Result;
+                    new FileDataStore(path, true)).Result;
             }
             return credential;
         }
+        public static UserCredential GetCredentials(User user) => GetCredentials(user, TokenDirectory);
+
         public static CalendarService GetCalendarService(UserCredential credential)
         {
             var service = new CalendarService(new BaseClientService.Initializer()
@@ -77,17 +79,28 @@ namespace GoogleCalendarCommunication
 
         public static void RemoveGoogleToken(User user)
         {
-            string[] files = Directory.GetFiles(TokenDirectory);
-            var tokenNames = files.Where(f => f.Contains(user.TCUsername));
-            if (tokenNames.ToList().Count != 0)
+            try
             {
-                string tokenName = files.Where(f => f.Contains(user.TCUsername)).First();
-                File.Delete(tokenName);
-            }            
+                string[] files = Directory.GetFiles(TokenDirectory);
+                var tokenNames = files.Where(f => f.Contains(user.TCUsername));
+                if (tokenNames.ToList().Count != 0)
+                {
+                    string tokenName = files.Where(f => f.Contains(user.TCUsername)).First();
+                    File.Delete(tokenName);
+                }
+            }
+            catch (IOException e)
+            {
+                var result = MessageBox.Show(string.Format("Token was not deleted, because '{0}'", e.Message), "Error", MessageBoxButtons.RetryCancel);
+                if (result == DialogResult.Retry)
+                {
+                    RemoveGoogleToken(user);
+                }
+            }
         }
-        public static List<CalendarInfo> GetCalendars(User user)
+        public static List<CalendarInfo> GetCalendars(User user, string path)
         {
-            var service = GetCalendarService(GetCredentials(user));
+            var service = GetCalendarService(GetCredentials(user, path));
             CalendarList calendars = service.CalendarList.List().Execute();
             var calendarsList = new List<CalendarInfo>();
             foreach (var calendar in calendars.Items)
@@ -96,6 +109,7 @@ namespace GoogleCalendarCommunication
             }
             return calendarsList;
         }
+        public static List<CalendarInfo> GetCalendars(User user) => GetCalendars(user, TokenDirectory);
         public static string CreateNewCalendar(User user, string Name)
         {
             Calendar calendar = new Calendar();
@@ -104,6 +118,13 @@ namespace GoogleCalendarCommunication
             Calendar createdCalendar = service.Calendars.Insert(calendar).Execute();
             return createdCalendar.Id;
         }
+        public static string GetEmail(User user, string path)
+        {
+            var service = GetCalendarService(GetCredentials(user, path));
+            var calendar = service.CalendarList.List().Execute().Items.Where(c => c.Primary.GetValueOrDefault()).FirstOrDefault();
+            return calendar.Summary;
+        }
+        public static string GetEmail(User user) => GetEmail(user, TokenDirectory);
 
     }
 

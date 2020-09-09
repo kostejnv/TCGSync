@@ -66,6 +66,7 @@ namespace TCGSync.UI
 
         private void DeleteButton_Click(object sender, EventArgs e)
         {
+            if (UserListBox.SelectedItem == null) return;
             User user = (User)UserListBox.SelectedItem;
             var deleter = new UserModifications.UserDeleter(user);
             deleter.DeleteUser();
@@ -79,6 +80,24 @@ namespace TCGSync.UI
         private void newUserToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             CreateButton_Click(sender, e);
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+        }
+
+        public void EnableChangeAndDeleteButton()
+        {
+            ChangeUserButton.Enabled = false;
+            DeleteButton.Enabled = false;
+        }
+
+        private void ChangeUserButton_Click(object sender, EventArgs e)
+        {
+            if (UserListBox.SelectedItem == null) return;
+            User user = (User)UserListBox.SelectedItem;
+            EditUserForm editUserForm = new EditUserForm(user);
+            editUserForm.Show();
         }
     }
 }

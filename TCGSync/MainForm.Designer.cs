@@ -117,27 +117,27 @@
             // synchronizeToolStripMenuItem1
             // 
             this.synchronizeToolStripMenuItem1.Name = "synchronizeToolStripMenuItem1";
-            this.synchronizeToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.synchronizeToolStripMenuItem1.Size = new System.Drawing.Size(127, 22);
             this.synchronizeToolStripMenuItem1.Text = "Sync Now";
             this.synchronizeToolStripMenuItem1.Click += new System.EventHandler(this.synchronizeToolStripMenuItem1_Click);
             // 
             // newUserToolStripMenuItem1
             // 
             this.newUserToolStripMenuItem1.Name = "newUserToolStripMenuItem1";
-            this.newUserToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.newUserToolStripMenuItem1.Size = new System.Drawing.Size(127, 22);
             this.newUserToolStripMenuItem1.Text = "New User";
             this.newUserToolStripMenuItem1.Click += new System.EventHandler(this.newUserToolStripMenuItem1_Click);
             // 
             // helpToolStripMenuItem1
             // 
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(127, 22);
             this.helpToolStripMenuItem1.Text = "Help";
             // 
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(127, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
             // 
             // statusStrip1
@@ -242,6 +242,7 @@
             this.ChangeUserButton.TabIndex = 19;
             this.ChangeUserButton.Text = "Change";
             this.ChangeUserButton.UseVisualStyleBackColor = true;
+            this.ChangeUserButton.Click += new System.EventHandler(this.ChangeUserButton_Click);
             // 
             // MainForm
             // 
@@ -261,6 +262,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.contextMenuStrip1.ResumeLayout(false);

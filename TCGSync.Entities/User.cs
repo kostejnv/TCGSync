@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TCGSync.Entities
 {
-    public class User
+    public class User : ICloneable
     {
         public string TCUsername;
         public string TCPassword;
@@ -14,7 +14,7 @@ namespace TCGSync.Entities
         public string Fullname { private get; set; }
 
         // What events was last synchronizated
-        List<Event> Events = new List<Event>();
+        public List<Event> Events = new List<Event>();
         public Dictionary<string, Event> EventsAccordingToGoogleId = new Dictionary<string, Event>();
         public Dictionary<string, Event> EventsAccordingToTCId = new Dictionary<string, Event>();
 
@@ -62,6 +62,22 @@ namespace TCGSync.Entities
                 if (event1.Start > DateTime.Now - TimeSpan.FromDays(User.MaxPastSyncInterval))
                     AddEvent(event1);
             }
+        }
+        public object Clone()
+        {
+            User user = new User();
+            user.TCUsername = TCUsername;
+            user.TCPassword = TCPassword;
+            user.googleCalendarId = googleCalendarId;
+            user.Fullname = Fullname;
+            user.PastSyncInterval = PastSyncInterval;
+            user.IsFutureSpecified = IsFutureSpecified;
+            user.FutureSyncInterval = FutureSyncInterval;
+            user.Events = Events;
+            user.EventsAccordingToGoogleId = EventsAccordingToGoogleId;
+            user.EventsAccordingToTCId = EventsAccordingToTCId;
+            return user;
+            
         }
         /// <summary>
         /// Method stores data about user

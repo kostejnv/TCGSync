@@ -14,24 +14,25 @@ namespace TCGSync
     {
         public static List<User> userDatabase = new List<User>();
         public static decimal IntervalInMinutes = 15;
-        public static ListBox listBox { private get; set; }
+        public static MainForm Form { private get; set; }
         private static object FileLocker = new object();
-        public static void InitializeDatabase(ListBox viewToDatabase, NumericUpDown intervalSyncDomain)
+        public static void InitializeDatabase(MainForm form, NumericUpDown intervalSyncDomain)
         {
-            listBox = viewToDatabase;
+            Form = form;
             LoadDatabase();
             RefreshListBox();
             intervalSyncDomain.Value = IntervalInMinutes;
         }
 
-        private static void RefreshListBox()
+        public static void RefreshListBox()
         {
-            if (listBox == null) return;
-            listBox.Items.Clear();
+            if (Form.UserListBox == null) return;
+            Form.UserListBox.Items.Clear();
             foreach (var user in userDatabase)
             {
-                listBox.Items.Add(user);
+                Form.UserListBox.Items.Add(user);
             }
+            if (Form.UserListBox.SelectedItem == null) Form.EnableChangeAndDeleteButton();
 
         }
         public static void AddUserToUserDatabase(User user)
@@ -57,7 +58,6 @@ namespace TCGSync
                         sw.WriteLine(user.ToStore());
                     }
                 }
-                RefreshListBox();
             }
 
         }

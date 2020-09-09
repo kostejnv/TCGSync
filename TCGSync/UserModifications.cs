@@ -8,6 +8,7 @@ using TimeCockpitCommunication;
 using GoogleCalendarCommunication;
 using System.Windows.Forms;
 using TCGSync.UI;
+using System.IO;
 
 namespace TCGSync.UserModifications
 {
@@ -66,15 +67,20 @@ namespace TCGSync.UserModifications
             NewUser.IsFutureSpecified = isFutureSpecified;
             NewUser.FutureSyncInterval = futureSyncInterval;
             if (Form.NewCalendarBox.Text != "")
+            {
                 NewUser.googleCalendarId = GUtil.CreateNewCalendar(NewUser, Form.NewCalendarBox.Text);
+                WaSSetSetting = true;
+            }
             else
             {
                 if (Form.CalendarsBox.SelectedItem != null)
+                {
                     NewUser.googleCalendarId = ((CalendarInfo)(Form.CalendarsBox.SelectedItem)).ID;
+                    WaSSetSetting = true;
+                }
                 else
                     WaSSetSetting = false;
             }
-            WaSSetSetting = true;
         }
         public User GetUser()
         {
@@ -103,8 +109,148 @@ namespace TCGSync.UserModifications
             {
                 UserDatabase.userDatabase.Remove(user);
                 GUtil.RemoveGoogleToken(user);
+                UserDatabase.RefreshListBox();
                 UserDatabase.SaveChanges();
             }
+        }
+    }
+
+    public class UserChanger : IDisposable
+    {
+        private User OldUser;
+        public User ChangingUser;
+        private EditUserForm Form;
+        bool WaSSetSetting = false;
+        bool WasGLogin = false;
+        private readonly string tempDir = "temp";
+        public UserChanger(User user, EditUserForm form)
+        {
+            ChangingUser = (User)user.Clone();
+            OldUser = user;
+            Form = form;
+        }
+        public void LoadCalendars()
+        {
+            var calendars = GUtil.GetCalendars(ChangingUser);
+            foreach (var calendar in calendars)
+            {
+                Form.CalendarsBox.Items.Add(calendar);
+            }
+            var actualCalendar = calendars.Where(c => c.ID == ChangingUser.googleCalendarId);
+            if ((actualCalendar.ToList().Count) == 1)
+            {
+                Form.CalendarsBox.SelectedItem = actualCalendar.First();
+            }           
+        }
+        public string GetGoogleEmail()
+        {
+            string[] files = Directory.GetFiles(tempDir);
+            var tokenNames = files.Where(f => f.Contains(ChangingUser.TCUsername));
+            if (tokenNames.ToList().Count != 0)
+            {
+                return GUtil.GetEmail(ChangingUser, tempDir);
+            }
+            else
+            {
+                return GUtil.GetEmail(ChangingUser);
+            }
+        }
+
+        public bool GoogleLogin()
+        {
+            RemoveTemp();
+            if (ChangingUser.TCUsername == null) throw new InvalidOperationException("This operation is without UserName not supported");
+            GUtil.GLogin(ChangingUser, "temp");
+            WasGLogin = true;
+            var calendars = GUtil.GetCalendars(ChangingUser, tempDir);
+            Form.CalendarsBox.Items.Clear();
+            foreach (var calendar in calendars)
+            {
+                Form.CalendarsBox.Items.Add(calendar);
+            }
+            Form.CalendarsBox.SelectedIndex = -1;
+            Form.CalendarsBox.Text = "(select)";
+            return true;
+        }
+        public void SetSetting(int pastSyncInterval, bool isFutureSpecified, int futureSyncInterval)
+        {
+            ChangingUser.PastSyncInterval = pastSyncInterval;
+            ChangingUser.IsFutureSpecified = isFutureSpecified;
+            ChangingUser.FutureSyncInterval = futureSyncInterval;
+            if (Form.NewCalendarBox.Text != "")
+            {
+                ChangingUser.googleCalendarId = GUtil.CreateNewCalendar(ChangingUser, Form.NewCalendarBox.Text);
+                WaSSetSetting = true;
+            }
+            else
+            {
+                if (Form.CalendarsBox.SelectedItem != null)
+                {
+                    ChangingUser.googleCalendarId = ((CalendarInfo)(Form.CalendarsBox.SelectedItem)).ID;
+                    WaSSetSetting = true;
+                }
+                else
+                    WaSSetSetting = false;
+            }
+        }
+        public void ChangeUserInDatabse()
+        {
+            if (!WaSSetSetting) throw new InvalidOperationException("Setting was not filled");
+            lock (UserDatabase.userDatabase)
+            {
+                ChangingUser.EventsAccordingToGoogleId = OldUser.EventsAccordingToGoogleId;
+                ChangingUser.EventsAccordingToTCId = OldUser.EventsAccordingToTCId;
+                ChangingUser.Events = OldUser.Events;
+                ChangeGoogleToken();
+                UserDatabase.userDatabase.Remove(OldUser);
+                UserDatabase.AddUserToUserDatabase(ChangingUser);
+            }
+            
+        }
+        public void ChangeGoogleToken()
+        {
+            if (!WasGLogin) return;
+            string tokenDir = GUtil.TokenDirectory;
+            GUtil.RemoveGoogleToken(OldUser);
+            try
+            {
+                string[] files = Directory.GetFiles(tempDir);
+                var tokenNames = files.Where(f => f.Contains(ChangingUser.TCUsername));
+                if (tokenNames.ToList().Count != 0)
+                {
+                    string tokenNameFullPath = files.Where(f => f.Contains(ChangingUser.TCUsername)).First();
+                    string tokenName = tokenNameFullPath.Substring(tempDir.Length + 1);
+                    File.Copy(tokenNameFullPath, Path.Combine(tokenDir, tokenName));
+                }
+            }
+            catch (IOException e)
+            {
+                MessageBox.Show(string.Format("Token does not add, because '{0}', please try login to Google again", e.Message), "Error", MessageBoxButtons.OK);
+                Form.GoogleButton.BackColor = System.Drawing.Color.OrangeRed;
+                throw new InvalidOperationException();
+            }
+        }
+        private void RemoveTemp()
+        {
+            try
+            {
+                string[] files = Directory.GetFiles(tempDir);
+                foreach (var file in files)
+                {
+                    File.Delete(file);
+                }
+            }
+            catch (IOException e)
+            {
+                MessageBox.Show(string.Format("Temporaly files was not deleted, because '{0}'", e.Message), "Error", MessageBoxButtons.OK);
+            }
+        }
+
+        public void Dispose()
+        {
+            OldUser = null;
+            ChangingUser = null;
+            RemoveTemp();
         }
     }
 }

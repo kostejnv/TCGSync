@@ -55,9 +55,10 @@ namespace TCGSync.UserModifications
             GUtil.GLogin(NewUser);
             WasGLogin = true;
             var calendars = GUtil.GetCalendars(NewUser);
+            Form.CalendarsBox.Invoke(new Action(() => Form.CalendarsBox.Items.Clear()));
             foreach (var calendar in calendars)
             {
-                Form.CalendarsBox.Items.Add(calendar);
+                Form.CalendarsBox.Invoke(new Action(() => Form.CalendarsBox.Items.Add(calendar)));
             }
             return true;
         }
@@ -87,6 +88,8 @@ namespace TCGSync.UserModifications
             if (!WasTCVerify) throw new InvalidOperationException("Time Cockpit verifying was not successful");
             if (!WasGLogin) throw new InvalidOperationException("Google Login was not successful");
             if (!WaSSetSetting) throw new InvalidOperationException("Setting was not filled");
+            if (UserDatabase.ExistsUser(NewUser.TCUsername))
+                throw new InvalidOperationException("There is the same username in database! Time Cockpit username is unique parameter and therefore it cannot be use more than once.");
             return NewUser;
         }
     }
@@ -107,10 +110,13 @@ namespace TCGSync.UserModifications
                 MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                UserDatabase.userDatabase.Remove(user);
-                GUtil.RemoveGoogleToken(user);
-                UserDatabase.RefreshListBox();
-                UserDatabase.SaveChanges();
+                lock (UserDatabase.userDatabase)
+                {
+                    UserDatabase.userDatabase.Remove(user);
+                    GUtil.RemoveGoogleToken(user);
+                    UserDatabase.RefreshListBox();
+                    UserDatabase.SaveChanges();
+                }
             }
         }
     }
@@ -163,13 +169,13 @@ namespace TCGSync.UserModifications
             GUtil.GLogin(ChangingUser, "temp");
             WasGLogin = true;
             var calendars = GUtil.GetCalendars(ChangingUser, tempDir);
-            Form.CalendarsBox.Items.Clear();
+            Form.CalendarsBox.Invoke(new Action(() => Form.CalendarsBox.Items.Clear()));
             foreach (var calendar in calendars)
             {
-                Form.CalendarsBox.Items.Add(calendar);
+                Form.CalendarsBox.Invoke(new Action(() => Form.CalendarsBox.Items.Add(calendar)));
             }
-            Form.CalendarsBox.SelectedIndex = -1;
-            Form.CalendarsBox.Text = "(select)";
+            Form.CalendarsBox.Invoke(new Action(() => Form.CalendarsBox.SelectedIndex = -1));
+            Form.CalendarsBox.Invoke(new Action(() => Form.CalendarsBox.Text = "(select)"));
             return true;
         }
         public void SetSetting(int pastSyncInterval, bool isFutureSpecified, int futureSyncInterval)
@@ -198,12 +204,15 @@ namespace TCGSync.UserModifications
             if (!WaSSetSetting) throw new InvalidOperationException("Setting was not filled");
             lock (UserDatabase.userDatabase)
             {
-                ChangingUser.EventsAccordingToGoogleId = OldUser.EventsAccordingToGoogleId;
-                ChangingUser.EventsAccordingToTCId = OldUser.EventsAccordingToTCId;
-                ChangingUser.Events = OldUser.Events;
-                ChangeGoogleToken();
-                UserDatabase.userDatabase.Remove(OldUser);
-                UserDatabase.AddUserToUserDatabase(ChangingUser);
+                lock (UserDatabase.userDatabase)
+                {
+                    ChangingUser.EventsAccordingToGoogleId = OldUser.EventsAccordingToGoogleId;
+                    ChangingUser.EventsAccordingToTCId = OldUser.EventsAccordingToTCId;
+                    ChangingUser.Events = OldUser.Events;
+                    ChangeGoogleToken();
+                    UserDatabase.userDatabase.Remove(OldUser);
+                    UserDatabase.AddUserToUserDatabase(ChangingUser);
+                }
             }
             
         }

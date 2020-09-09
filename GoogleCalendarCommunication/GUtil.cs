@@ -29,6 +29,7 @@ namespace GoogleCalendarCommunication
         /// Application name for Google Uses
         /// </summary>
         private static readonly string ApplicationName = "TCGSync";
+        private static object TokenLocker = new object();
         /// <summary>
         /// Log in Google Calendar
         /// </summary>
@@ -51,17 +52,17 @@ namespace GoogleCalendarCommunication
         public static UserCredential GetCredentials(User user, string path)
         {
             UserCredential credential;
-            using (var stream =
-                new FileStream("client_id.json", FileMode.Open, FileAccess.Read))
-            {
+                using (var stream =
+                    new FileStream("client_id.json", FileMode.Open, FileAccess.Read))
+                {
 
-                // This method try to find user's token, if failed create new one to credPath folder after log in Google
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.Load(stream).Secrets,
-                    Scopes,
-                    user.TCUsername,
-                    CancellationToken.None,
-                    new FileDataStore(path, true)).Result;
+                    // This method try to find user's token, if failed create new one to credPath folder after log in Google
+                    credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                        GoogleClientSecrets.Load(stream).Secrets,
+                        Scopes,
+                        user.TCUsername,
+                        CancellationToken.None,
+                        new FileDataStore(path, true)).Result;
             }
             return credential;
         }

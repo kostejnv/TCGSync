@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TCGSync.UserModifications;
@@ -50,6 +51,7 @@ namespace TCGSync
                 userChanger.SetSetting((int)StartDomain.Value, !EndSpecifiedCheckBox.Checked, (int)EndDomain.Value);
                 userChanger.ChangeUserInDatabse();
                 this.Dispose();
+                KillGLoginThreads();
                 userChanger.Dispose();
             }
             catch (InvalidOperationException ex)
@@ -82,20 +84,36 @@ namespace TCGSync
         private void CancelButton_Click(object sender, EventArgs e)
         {
             Dispose();
+            KillGLoginThreads();
             userChanger.Dispose();
         }
 
+        private List<Thread> threads = new List<Thread>();
+        private void KillGLoginThreads()
+        {
+            foreach (var t in threads)
+            {
+                if (t.IsAlive) t.Abort();
+            }
+        }
         private void GoogleButton_Click(object sender, EventArgs e)
         {
-            GoogleButton.BackColor = Color.Transparent;
+            Thread t1 = new Thread(() => GoogleButton_Click());
+            t1.Start();
+            threads.Add(t1);
+        }
+        private void GoogleButton_Click()
+        {
+            GoogleButton.Invoke(new Action(() => GoogleButton.BackColor = Color.Transparent));
             if (userChanger.GoogleLogin())
             {
-                GoogleButton.BackColor = Color.LightGreen;
-                EmailLabel.Text = userChanger.GetGoogleEmail();
+                GoogleButton.Invoke(new Action(() => GoogleButton.BackColor = Color.LightGreen));
+                CalendarsBox.Invoke(new Action(() => CalendarsBox.Enabled = true));
+                NewCalendarBox.Invoke(new Action(() => NewCalendarBox.Enabled = true));
             }
             else
             {
-                GoogleButton.BackColor = Color.OrangeRed;
+                GoogleButton.Invoke(new Action(() => GoogleButton.BackColor = Color.OrangeRed));
             }
         }
     }

@@ -64,8 +64,8 @@ namespace TCGSync.Entities
             if (obj == null || !(obj is Event))
                 return false;
             else
-                return GoogleId == ((Event)obj).GoogleId
-                    && TCId == ((Event)obj).TCId
+                return (GoogleId == ((Event)obj).GoogleId
+                    || TCId == ((Event)obj).TCId)
                     && Start == ((Event)obj).Start
                     && End == ((Event)obj).End
                     && Description == ((Event)obj).Description

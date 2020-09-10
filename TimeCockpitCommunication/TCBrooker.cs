@@ -47,11 +47,12 @@ namespace TimeCockpitCommunication
 
         public void SetEvent(Event event1) //TODO
         {
-            Guid eventGuid = new Guid(event1.TCId);
-            APP_Timesheet tCEvent = TCService.APP_Timesheet.Where(t => t.APP_TimesheetUuid == eventGuid).First();
+            APP_Timesheet tCEvent = TCService.APP_Timesheet.Where(t => t.APP_TimesheetUuid == new Guid(event1.TCId)).First();
             tCEvent.APP_BeginTime = event1.Start;
             tCEvent.APP_EndTime = event1.End;
             tCEvent.APP_Description = event1.Description;
+            TCService.UpdateObject(tCEvent);
+            TCService.SaveChanges();
         }
     }
 
@@ -70,7 +71,7 @@ namespace TimeCockpitCommunication
     {
         internal static APP_Timesheet ToAPP_Timesheet(this Event event1, User user, DataService services)
             => new APP_Timesheet
-            { 
+            {
                 APP_BeginTime = event1.Start,
                 APP_EndTime = event1.End,
                 APP_Description = event1.Description,

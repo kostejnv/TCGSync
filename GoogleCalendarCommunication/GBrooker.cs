@@ -89,7 +89,7 @@ namespace GoogleCalendarCommunication
             Google.Apis.Calendar.v3.Data.Event googleEvent = getRequest.Execute();
             googleEvent.Start = new EventDateTime() { DateTime = event1.Start };
             googleEvent.End = new EventDateTime() { DateTime = event1.End };
-            googleEvent.Description = event1.Description;
+            googleEvent.Summary = event1.Description;
             EventsResource.UpdateRequest updateRequest = new EventsResource.UpdateRequest(GService, googleEvent, user.googleCalendarId, event1.GoogleId);
             updateRequest.Execute();
         }

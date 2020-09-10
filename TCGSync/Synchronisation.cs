@@ -102,11 +102,11 @@ namespace TCGSync
                 var gID = gBrooker.CreateEvent(newEvent);
                 user.AddEvent(newEvent.WithGoogleID(gID));
             }
-            //foreach (var modifiedEvent in modifiedEvents)
-            //{
-            //    gBrooker.SetEvent(modifiedEvent);
-            //    user.ChangeEvent(modifiedEvent);
-            //}
+            foreach (var modifiedEvent in modifiedEvents)
+            {
+                gBrooker.SetEvent(modifiedEvent);
+                user.ChangeEvent(modifiedEvent);
+            }
 
         }
 
@@ -168,7 +168,7 @@ namespace TCGSync
                 if (oldEvents.ContainsKey(actualEvent.TCId)
                     && !oldEvents[actualEvent.TCId].Equals(actualEvent))
                 {
-                    modifiedEvents.Add(actualEvent);
+                    modifiedEvents.Add(actualEvent.WithGoogleID(oldEvents[actualEvent.TCId].GoogleId));
                 }
             }
             return modifiedEvents;
@@ -182,7 +182,7 @@ namespace TCGSync
                 if (oldEvents.ContainsKey(actualEvent.GoogleId)
                     && !oldEvents[actualEvent.GoogleId].Equals(actualEvent))
                 {
-                    modifiedEvents.Add(actualEvent);
+                    modifiedEvents.Add(actualEvent.WithTCID(oldEvents[actualEvent.GoogleId].TCId));
                 }
             }
             return modifiedEvents;
@@ -328,7 +328,7 @@ namespace TCGSync
         {
             if (MinutesToNextSync > 0)
             {
-                    MinutesToNextSync--;
+                MinutesToNextSync--;
             }
             else
             {

@@ -38,14 +38,12 @@ namespace TCGSync.UI
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            SyncInfoGiver.SendMessage();
             if (Run.FirstTimeRun)
             {
                 IconTray.Visible = false;
             }
             else
             {
-                WindowState = FormWindowState.Minimized;
                 IconTray.Visible = true;
                 this.Hide();
             }
@@ -53,8 +51,8 @@ namespace TCGSync.UI
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            
-            
+
+
         }
 
         private void SynchronizeButton_Click(object sender, EventArgs e)
@@ -127,7 +125,12 @@ namespace TCGSync.UI
             if (!IsDisposed && Created)
             {
                 this.Invoke(new Action(() => MessageLabel.Text = text));
-                this.Invoke(new Action(() => IconTray.Text = string.Format("TCGSync - {0}", text)));
+
+                string iconMessage = string.Format("TCGSync - {0}", text);
+                if (iconMessage.Length < 63)
+                    this.Invoke(new Action(() => IconTray.Text = string.Format("TCGSync - {0}", text)));
+                else
+                    this.Invoke(new Action(() => IconTray.Text = string.Format("TCGSync - {0}", text).Substring(0, 60) + "..."));
             }
         }
 

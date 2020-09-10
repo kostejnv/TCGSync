@@ -47,7 +47,7 @@ namespace TCGSync.UI
 
         private void SynchronizeButton_Click(object sender, EventArgs e)
         {
-            Synchronization.Sync();
+            Synchronization.SyncNow();
         }
 
         private void UserListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -74,7 +74,7 @@ namespace TCGSync.UI
 
         private void synchronizeToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Synchronization.Sync();
+            Synchronization.SyncNow();
         }
 
         private void newUserToolStripMenuItem1_Click(object sender, EventArgs e)

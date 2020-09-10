@@ -7,13 +7,14 @@ using TCGSync.Entities;
 using TimeCockpitCommunication;
 using GoogleCalendarCommunication;
 using System.Timers;
+using System.Threading;
 
 namespace TCGSync
 {
     public static class Synchronization
     {
         
-        private static Timer SyncTimer;
+        private static System.Timers.Timer SyncTimer;
 
         public static void RunAutoSync()
         {
@@ -22,13 +23,18 @@ namespace TCGSync
                 SyncTimer.Stop();
                 SyncTimer.Dispose();
             }
-            SyncTimer = new Timer((double)UserDatabase.IntervalInMinutes * 60000);
+            SyncTimer = new System.Timers.Timer((double)UserDatabase.IntervalInMinutes * 60000);
             SyncTimer.Elapsed += Sync;
             SyncTimer.AutoReset = true;
             SyncTimer.Enabled = true;
         } 
+        public static void SyncNow()
+        {
+            Thread t1 = new Thread(() => Sync());
+            t1.Start();
+        }
 
-        public static void Sync()
+        private static void Sync()
         {
             lock (UserDatabase.userDatabase)
             {
@@ -44,7 +50,7 @@ namespace TCGSync
                 UserDatabase.SaveChanges();
             }
         }
-        public static void Sync(Object source, ElapsedEventArgs e)
+        private static void Sync(Object source, ElapsedEventArgs e)
         {
             Sync();
         }

@@ -57,6 +57,7 @@ namespace TCGSync
             }
         }
 
+        
         public static void SaveChanges()
         {
             lock (userDatabase)
@@ -101,6 +102,10 @@ namespace TCGSync
                             }
                         }
                         RefreshListBox();
+                    }
+                    else
+                    {
+                        Run.FirstTimeRun = true;
                     }
                 }
                 catch (Exception ex)

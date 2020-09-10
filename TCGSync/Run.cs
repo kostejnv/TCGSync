@@ -30,6 +30,6 @@ namespace TCGSync
             UserDatabase.SaveChanges();
         }
 
-         
+        public static bool FirstTimeRun = false;
     }
 }

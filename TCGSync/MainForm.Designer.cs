@@ -29,15 +29,18 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.synchronizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newUserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopSyncToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.synchronizeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.newUserToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.synchronizeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopSyncToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -50,49 +53,58 @@
             this.label1 = new System.Windows.Forms.Label();
             this.SetTimeButton = new System.Windows.Forms.Button();
             this.ChangeUserButton = new System.Windows.Forms.Button();
-            this.stopSyncToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StopSync = new System.Windows.Forms.Button();
-            this.contextMenuStrip1.SuspendLayout();
+            this.IconTray = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SyncIntervalBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // contextMenuStrip1
+            // contextMenuStrip
             // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.contextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.synchronizeToolStripMenuItem,
             this.newUserToolStripMenuItem,
+            this.stopSyncToolStripMenuItem1,
             this.helpToolStripMenuItem,
             this.exitToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(139, 92);
-            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            this.contextMenuStrip.Name = "contextMenuStrip1";
+            this.contextMenuStrip.Size = new System.Drawing.Size(181, 136);
+            this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // synchronizeToolStripMenuItem
             // 
             this.synchronizeToolStripMenuItem.Name = "synchronizeToolStripMenuItem";
-            this.synchronizeToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.synchronizeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.synchronizeToolStripMenuItem.Text = "Synchronize";
             // 
             // newUserToolStripMenuItem
             // 
             this.newUserToolStripMenuItem.Name = "newUserToolStripMenuItem";
-            this.newUserToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.newUserToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newUserToolStripMenuItem.Text = "New User";
+            // 
+            // stopSyncToolStripMenuItem1
+            // 
+            this.stopSyncToolStripMenuItem1.Name = "stopSyncToolStripMenuItem1";
+            this.stopSyncToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.stopSyncToolStripMenuItem1.Text = "Stop Sync";
+            this.stopSyncToolStripMenuItem1.Click += new System.EventHandler(this.stopSyncToolStripMenuItem1_Click);
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // menuStrip1
             // 
@@ -119,6 +131,13 @@
             this.menuToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.menuToolStripMenuItem.Text = "Menu";
             // 
+            // newUserToolStripMenuItem1
+            // 
+            this.newUserToolStripMenuItem1.Name = "newUserToolStripMenuItem1";
+            this.newUserToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.newUserToolStripMenuItem1.Text = "New User";
+            this.newUserToolStripMenuItem1.Click += new System.EventHandler(this.newUserToolStripMenuItem1_Click);
+            // 
             // synchronizeToolStripMenuItem1
             // 
             this.synchronizeToolStripMenuItem1.Name = "synchronizeToolStripMenuItem1";
@@ -126,12 +145,12 @@
             this.synchronizeToolStripMenuItem1.Text = "Sync Now";
             this.synchronizeToolStripMenuItem1.Click += new System.EventHandler(this.synchronizeToolStripMenuItem1_Click);
             // 
-            // newUserToolStripMenuItem1
+            // stopSyncToolStripMenuItem
             // 
-            this.newUserToolStripMenuItem1.Name = "newUserToolStripMenuItem1";
-            this.newUserToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.newUserToolStripMenuItem1.Text = "New User";
-            this.newUserToolStripMenuItem1.Click += new System.EventHandler(this.newUserToolStripMenuItem1_Click);
+            this.stopSyncToolStripMenuItem.Name = "stopSyncToolStripMenuItem";
+            this.stopSyncToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.stopSyncToolStripMenuItem.Text = "Stop Sync";
+            this.stopSyncToolStripMenuItem.Click += new System.EventHandler(this.stopSyncToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem1
             // 
@@ -144,6 +163,7 @@
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
             this.exitToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
+            this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
             // statusStrip1
             // 
@@ -258,13 +278,6 @@
             this.ChangeUserButton.UseVisualStyleBackColor = true;
             this.ChangeUserButton.Click += new System.EventHandler(this.ChangeUserButton_Click);
             // 
-            // stopSyncToolStripMenuItem
-            // 
-            this.stopSyncToolStripMenuItem.Name = "stopSyncToolStripMenuItem";
-            this.stopSyncToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.stopSyncToolStripMenuItem.Text = "Stop Sync";
-            this.stopSyncToolStripMenuItem.Click += new System.EventHandler(this.stopSyncToolStripMenuItem_Click);
-            // 
             // StopSync
             // 
             this.StopSync.Location = new System.Drawing.Point(24, 290);
@@ -274,6 +287,14 @@
             this.StopSync.Text = "Stop Sync";
             this.StopSync.UseVisualStyleBackColor = true;
             this.StopSync.Click += new System.EventHandler(this.StopSync_Click);
+            // 
+            // IconTray
+            // 
+            this.IconTray.ContextMenuStrip = this.contextMenuStrip;
+            this.IconTray.Icon = ((System.Drawing.Icon)(resources.GetObject("IconTray.Icon")));
+            this.IconTray.Text = "IconTray";
+            this.IconTray.Visible = true;
+            this.IconTray.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.IconTray_MouseDoubleClick);
             // 
             // MainForm
             // 
@@ -291,14 +312,15 @@
             this.Controls.Add(this.UserListBox);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "TCGSync";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.contextMenuStrip.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
@@ -311,7 +333,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem synchronizeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newUserToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
@@ -334,6 +356,8 @@
         private System.Windows.Forms.Button ChangeUserButton;
         private System.Windows.Forms.ToolStripMenuItem stopSyncToolStripMenuItem;
         private System.Windows.Forms.Button StopSync;
+        private System.Windows.Forms.ToolStripMenuItem stopSyncToolStripMenuItem1;
+        private System.Windows.Forms.NotifyIcon IconTray;
     }
 }
 

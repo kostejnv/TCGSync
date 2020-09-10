@@ -39,6 +39,16 @@ namespace TCGSync.UI
         private void MainForm_Load(object sender, EventArgs e)
         {
             SyncInfoGiver.SendMessage();
+            if (Run.FirstTimeRun)
+            {
+                IconTray.Visible = false;
+            }
+            else
+            {
+                WindowState = FormWindowState.Minimized;
+                IconTray.Visible = true;
+                this.Hide();
+            }
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -86,6 +96,17 @@ namespace TCGSync.UI
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                WindowState = FormWindowState.Minimized;
+                IconTray.Visible = true;
+                this.Hide();
+                e.Cancel = true;
+            }
+            else
+            {
+                Dispose();
+            }
         }
 
         public void EnableChangeAndDeleteButton()
@@ -103,7 +124,11 @@ namespace TCGSync.UI
         }
         public void ShowMessage(string text, bool important = false)
         {
-            if (!IsDisposed && Created) this.Invoke(new Action(() => MessageLabel.Text = text));
+            if (!IsDisposed && Created)
+            {
+                this.Invoke(new Action(() => MessageLabel.Text = text));
+                this.Invoke(new Action(() => IconTray.Text = string.Format("TCGSync - {0}", text)));
+            }
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -123,6 +148,7 @@ namespace TCGSync.UI
                 Synchronization.StopAutoSync();
                 StopSync.Text = "Continue";
                 stopSyncToolStripMenuItem.Text = "Continue";
+                stopSyncToolStripMenuItem1.Text = "Continue";
 
             }
             else
@@ -130,7 +156,34 @@ namespace TCGSync.UI
                 Synchronization.ContinueAutoSync();
                 StopSync.Text = "Stop Sync";
                 stopSyncToolStripMenuItem.Text = "Stop Sync";
+                stopSyncToolStripMenuItem1.Text = "Stop Sync";
             }
+        }
+
+        private void stopSyncToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            StopSync_Click(sender, e);
+        }
+
+        private void IconTray_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Show();
+            IconTray.Visible = false;
+            WindowState = FormWindowState.Normal;
+        }
+
+        private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Do you really want to exit?", "TCGSync", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                Dispose();
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Dispose();
         }
     }
 }

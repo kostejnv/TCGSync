@@ -37,7 +37,7 @@ namespace TCGSync.Entities
         public User() { }
         public User(string data)
         {
-            char[] separator = new char[1] { ';' };
+            char[] separator = new char[1] { ParameterSeparator };
             var dataArray = data.Split(separator);
             TCUsername = dataArray[0];
             TCPassword = BasicEncription.Decode(dataArray[1]);
@@ -54,7 +54,7 @@ namespace TCGSync.Entities
             }
             Fullname = dataArray[5];
             GoogleEmail = dataArray[6];
-            separator[0] = ',';
+            separator[0] = EventSeparator;
             var eventArray = dataArray[7].Split(separator, StringSplitOptions.RemoveEmptyEntries);
             foreach (var strEvent in eventArray)
             {
@@ -82,6 +82,8 @@ namespace TCGSync.Entities
             return user;
             
         }
+        public static readonly char ParameterSeparator = '{';
+        public static readonly char EventSeparator = '|';
         /// <summary>
         /// Method stores data about user
         /// </summary>
@@ -90,24 +92,24 @@ namespace TCGSync.Entities
         {
             StringBuilder data = new StringBuilder();
             data.Append(TCUsername);
-            data.Append(";");
+            data.Append(ParameterSeparator);
             data.Append(BasicEncription.Encode(TCPassword));
-            data.Append(";");
+            data.Append(ParameterSeparator);
             data.Append(googleCalendarId);
-            data.Append(";");
+            data.Append(ParameterSeparator);
             data.Append(PastSyncInterval);
-            data.Append(";");
+            data.Append(ParameterSeparator);
             if (IsFutureSpecified) data.Append(_futureSyncInterval);
             else data.Append("false");
-            data.Append(";");
+            data.Append(ParameterSeparator);
             data.Append(Fullname);
-            data.Append(";");
+            data.Append(ParameterSeparator);
             data.Append(GoogleEmail);
-            data.Append(";");
+            data.Append(ParameterSeparator);
             foreach (var event1 in Events)
             {
                 data.Append(event1.ToStore());
-                data.Append(",");
+                data.Append(EventSeparator);
             }
             return data.ToString();
         }
@@ -151,9 +153,9 @@ namespace TCGSync.Entities
             private static string EncodeChar(char character)
             {
                 char encodeChar = (char)(character + Shift);
-                if (encodeChar == ';') encodeChar = (char)33;
-                if (encodeChar == ',') encodeChar = (char)34;
-                if (encodeChar == '|') encodeChar = (char)35;
+                if (encodeChar == ParameterSeparator) encodeChar = (char)33;
+                if (encodeChar == EventSeparator) encodeChar = (char)34;
+                if (encodeChar == Event.ParameterSeparator) encodeChar = (char)35;
                 
                 return new string(new char[3] { encodeChar, GetRandomCharacter(), GetRandomCharacter() });
 
@@ -163,7 +165,7 @@ namespace TCGSync.Entities
                 lock (random)
                 {
                     int randomChar = random.Next(36, 126);
-                    if (randomChar == ';' || randomChar == ',' || randomChar == '|') randomChar++;
+                    if (randomChar == ParameterSeparator || randomChar == EventSeparator || randomChar == Event.ParameterSeparator) randomChar++;
                     return (char)randomChar;
                 }
             }
@@ -180,9 +182,9 @@ namespace TCGSync.Entities
             private static char DecodeChar(string character)
             {
                 char decodedChar = character[0];
-                if (decodedChar == 33) decodedChar = ';';
-                if (decodedChar == 34) decodedChar = ',';
-                if (decodedChar == 35) decodedChar = '|';
+                if (decodedChar == 33) decodedChar = ParameterSeparator;
+                if (decodedChar == 34) decodedChar = EventSeparator;
+                if (decodedChar == 35) decodedChar = Event.ParameterSeparator;
                 return (char)(decodedChar - Shift);
 
             }

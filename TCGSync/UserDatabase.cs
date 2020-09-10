@@ -13,6 +13,7 @@ namespace TCGSync
     public static class UserDatabase
     {
         public static List<User> userDatabase = new List<User>();
+        public static object IntervalInMinutesLocker = new object();
         public static decimal IntervalInMinutes = 15;
         public static MainForm Form { private get; set; }
         private static object FileDatabaseLocker = new object();
@@ -21,7 +22,8 @@ namespace TCGSync
             Form = form;
             LoadDatabase();
             RefreshListBox();
-            intervalSyncDomain.Value = IntervalInMinutes;
+            lock (UserDatabase.IntervalInMinutesLocker)
+                intervalSyncDomain.Value = IntervalInMinutes;
         }
 
         public static void RefreshListBox()
@@ -57,17 +59,20 @@ namespace TCGSync
 
         public static void SaveChanges()
         {
-            lock (FileDatabaseLocker)
+            lock (userDatabase)
             {
-                using (StreamWriter sw = new StreamWriter("data"))
+                lock (FileDatabaseLocker)
                 {
-                    sw.WriteLine(IntervalInMinutes);
-                    lock (userDatabase)
+                    using (StreamWriter sw = new StreamWriter("data"))
                     {
+                        lock (UserDatabase.IntervalInMinutesLocker)
+                            sw.WriteLine(IntervalInMinutes);
+
                         foreach (var user in userDatabase)
                         {
                             sw.WriteLine(user.ToStore());
                         }
+
                     }
                 }
             }
@@ -85,7 +90,8 @@ namespace TCGSync
                         using (var sr = new StreamReader("data"))
                         {
                             string line = null;
-                            if ((line = sr.ReadLine()) != null) IntervalInMinutes = Decimal.Parse(line);
+                            lock (UserDatabase.IntervalInMinutesLocker)
+                                if ((line = sr.ReadLine()) != null) IntervalInMinutes = Decimal.Parse(line);
                             lock (userDatabase)
                             {
                                 while ((line = sr.ReadLine()) != null)

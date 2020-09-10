@@ -38,11 +38,13 @@ namespace TCGSync.UI
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            SyncInfoGiver.SendMessage();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            UserDatabase.SaveChanges();
+            
+            
         }
 
         private void SynchronizeButton_Click(object sender, EventArgs e)
@@ -98,6 +100,10 @@ namespace TCGSync.UI
             User user = (User)UserListBox.SelectedItem;
             EditUserForm editUserForm = new EditUserForm(user);
             editUserForm.Show();
+        }
+        public void ShowMessage(string text, bool important = false)
+        {
+            if (!IsDisposed && Created) this.Invoke(new Action(() => MessageLabel.Text = text));
         }
     }
 }

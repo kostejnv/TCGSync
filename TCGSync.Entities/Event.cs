@@ -15,10 +15,9 @@ namespace TCGSync.Entities
         public DateTime? End;
         public string Description;
         public string Customer;
-
         public Event(string data)
         {
-            char[] separator = new char[1] { '|' };
+            char[] separator = new char[1] { ParameterSeparator };
             var splited = data.Split(separator);
             GoogleId = splited[0];
             TCId = splited[1];
@@ -31,21 +30,25 @@ namespace TCGSync.Entities
 
         public Event() { }
 
+        public static readonly char ParameterSeparator = '}';
         public string ToStore()
         {
             try
             {
                 StringBuilder sB = new StringBuilder();
                 sB.Append(GoogleId);
-                sB.Append("|");
+                sB.Append(ParameterSeparator);
                 sB.Append(TCId);
-                sB.Append("|");
+                sB.Append(ParameterSeparator);
                 sB.Append(Start.Value.Ticks);
-                sB.Append("|");
+                sB.Append(ParameterSeparator);
                 sB.Append(End.Value.Ticks);
-                sB.Append("|");
-                sB.Append(Description.Replace(';',','));
-                sB.Append("|");
+                sB.Append(ParameterSeparator);
+                string replacedDescription = Description.Replace(ParameterSeparator, ')');
+                replacedDescription = Description.Replace(User.ParameterSeparator, '(');
+                replacedDescription = Description.Replace(User.EventSeparator, '/');
+                sB.Append(replacedDescription);
+                sB.Append(ParameterSeparator);
                 sB.Append(Customer);
                 return sB.ToString();
             }

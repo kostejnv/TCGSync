@@ -44,7 +44,7 @@ namespace TCGSync.Entities
                 sB.Append("|");
                 sB.Append(End.Value.Ticks);
                 sB.Append("|");
-                sB.Append(Description);
+                sB.Append(Description.Replace(';',','));
                 sB.Append("|");
                 sB.Append(Customer);
                 return sB.ToString();

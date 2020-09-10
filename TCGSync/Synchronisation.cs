@@ -31,6 +31,16 @@ namespace TCGSync
             SyncTimer.Enabled = true;
             SyncInfoGiver.RunTimerForUser();
         }
+        public static void StopAutoSync()
+        {
+            SyncTimer.Stop();
+            SyncInfoGiver.StopTimerForUser();
+        }
+        public static void ContinueAutoSync()
+        {
+            SyncTimer.Enabled = true;
+            SyncInfoGiver.ContinueTimerForUser();
+        }
         public static void SyncNow()
         {
             Thread t1 = new Thread(() => Sync());
@@ -213,6 +223,16 @@ namespace TCGSync
                 SendMessage();
             }
         }
+        private static bool _wasSyncStop = false;
+        public static bool WasSyncStop
+        {
+            private get => _wasSyncStop;
+            set
+            {
+                _wasSyncStop = value;
+                SendMessage();
+            }
+        }
         private static bool _wasLastSyncSuccessful = true;
         public static bool WasLastSyncSuccessful
         {
@@ -258,8 +278,16 @@ namespace TCGSync
                     SyncMinutesTimer.Enabled = true;
                 }
             }
-
-
+        }
+        public static void StopTimerForUser()
+        {
+            SyncMinutesTimer.Stop();
+            WasSyncStop = true;
+        }
+        public static void ContinueTimerForUser()
+        {
+            SyncMinutesTimer.Enabled = true;
+            WasSyncStop = false;
         }
         public static void SendMessage()
         {
@@ -275,15 +303,22 @@ namespace TCGSync
                 }
                 else
                 {
-                    message += string.Format("Next sync in {0} minutes ", MinutesToNextSync);
-                    if (WasLastSyncSuccessful)
+                    if (!WasSyncStop)
                     {
-                        message += string.Format("(last sync was successful)");
+                        message += string.Format("Next sync in {0} minutes ", MinutesToNextSync);
+                        if (WasLastSyncSuccessful)
+                        {
+                            message += string.Format("(last sync was successful)");
+                        }
+                        else
+                        {
+                            message += string.Format("(last sync failed because '{0}')", ErrorMessage);
+                            importantMessage = true;
+                        }
                     }
                     else
                     {
-                        message += string.Format("(last sync failed because '{0}')", ErrorMessage);
-                        importantMessage = true;
+                        message += "Synchronisation was stopped";
                     }
                 }
             }

@@ -105,5 +105,32 @@ namespace TCGSync.UI
         {
             if (!IsDisposed && Created) this.Invoke(new Action(() => MessageLabel.Text = text));
         }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void stopSyncToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StopSync_Click(sender, e);
+        }
+
+        private void StopSync_Click(object sender, EventArgs e)
+        {
+            if (StopSync.Text == "Stop Sync")
+            {
+                Synchronization.StopAutoSync();
+                StopSync.Text = "Continue";
+                stopSyncToolStripMenuItem.Text = "Continue";
+
+            }
+            else
+            {
+                Synchronization.ContinueAutoSync();
+                StopSync.Text = "Stop Sync";
+                stopSyncToolStripMenuItem.Text = "Stop Sync";
+            }
+        }
     }
 }

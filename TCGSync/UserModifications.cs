@@ -91,6 +91,7 @@ namespace TCGSync.UserModifications
             if (UserDatabase.ExistsUser(NewUser.TCUsername))
                 throw new InvalidOperationException("There is the same username in database! Time Cockpit username is unique parameter and therefore it cannot be use more than once.");
             NewUser.GoogleEmail = GUtil.GetEmail(NewUser);
+            Synchronization.SyncNow();
             return NewUser;
         }
     }
@@ -217,9 +218,9 @@ namespace TCGSync.UserModifications
                     UserDatabase.AddUserToUserDatabase(ChangingUser);
                 }
             }
-            
+            if (WasGLogin) Synchronization.SyncNow();
         }
-        public void ChangeGoogleToken()
+        private void ChangeGoogleToken()
         {
             if (!WasGLogin) return;
             string tokenDir = GUtil.TokenDirectory;

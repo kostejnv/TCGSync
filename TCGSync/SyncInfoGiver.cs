@@ -12,11 +12,27 @@ using TCGSync.UI;
 
 namespace TCGSync
 {
+    /// <summary>
+    /// Class that cares for synchronisation message
+    /// </summary>
     public static class SyncInfoGiver
     {
+        /// <summary>
+        /// Form where should message display
+        /// </summary>
         private static MainForm MessageCannal;
+
+        /// <summary>
+        /// timer that shows in what time will be necx sync
+        /// </summary>
         private static System.Timers.Timer SyncMinutesTimer;
+
+        /// <summary>
+        /// Locker for all this data field
+        /// </summary>
         public static readonly object SyncInfoGiverLocker = new object();
+
+        #region Data Field
         private static string _syncInfo;
         public static string SyncInfo
         {
@@ -26,7 +42,8 @@ namespace TCGSync
                 _syncInfo = value;
                 SendMessage();
             }
-            }
+        }
+
         public static int _minutesToNextSync;
         public static int MinutesToNextSync
         {
@@ -36,7 +53,8 @@ namespace TCGSync
                 _minutesToNextSync = value;
                 SendMessage();
             }
-            }
+        }
+
         private static bool _isProccessingSync = false;
         public static bool IsProccessingSync
         {
@@ -46,7 +64,8 @@ namespace TCGSync
                 _isProccessingSync = value;
                 SendMessage();
             }
-            }
+        }
+
         private static bool _wasSyncStop = false;
         public static bool WasSyncStop
         {
@@ -56,7 +75,8 @@ namespace TCGSync
                 _wasSyncStop = value;
                 SendMessage();
             }
-            }
+        }
+
         private static bool _wasLastSyncSuccessful = true;
         public static bool WasLastSyncSuccessful
         {
@@ -66,7 +86,8 @@ namespace TCGSync
                 _wasLastSyncSuccessful = value;
                 SendMessage();
             }
-            }
+        }
+
         public static string _errorMessage;
         public static string ErrorMessage
         {
@@ -76,12 +97,17 @@ namespace TCGSync
                 _errorMessage = value;
                 WasLastSyncSuccessful = false;
             }
-            }
+        }
+        #endregion
 
         public static void Initialization(MainForm messageCannal)
         {
             MessageCannal = messageCannal;
         }
+
+        /// <summary>
+        /// start TimerForUser
+        /// </summary>
         public static void RunTimerForUser()
         {
             if (SyncMinutesTimer != null && SyncMinutesTimer.Enabled)
@@ -103,16 +129,28 @@ namespace TCGSync
                 }
             }
         }
+
+        /// <summary>
+        /// Stop TimerForUser
+        /// </summary>
         public static void StopTimerForUser()
         {
             SyncMinutesTimer.Stop();
             WasSyncStop = true;
         }
+
+        /// <summary>
+        /// start TimerForUser after its stop
+        /// </summary>
         public static void ContinueTimerForUser()
         {
             SyncMinutesTimer.Enabled = true;
             WasSyncStop = false;
         }
+
+        /// <summary>
+        /// Send message to form about sync information
+        /// </summary>
         public static void SendMessage()
         {
             bool importantMessage = false;
@@ -148,6 +186,14 @@ namespace TCGSync
             }
             MessageCannal.ShowMessage(message, importantMessage);
         }
+
+        #region Private Methods
+
+        /// <summary>
+        /// Method For TimerForUser
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
         private static void SyncTimer(Object source, ElapsedEventArgs e)
         {
             if (MinutesToNextSync > 0)
@@ -160,29 +206,6 @@ namespace TCGSync
                     MinutesToNextSync = (int)DataDatabase.IntervalInMinutes;
             }
         }
-    }
-
-    internal static class EventExtension
-    {
-        public static Event WithGoogleID(this Event event1, string GoogleID)
-            => new Event()
-            {
-                GoogleId = GoogleID,
-                TCId = event1.TCId,
-                Description = event1.Description,
-                Start = event1.Start,
-                End = event1.End,
-                Customer = event1.Customer
-            };
-        public static Event WithTCID(this Event event1, string TCID)
-            => new Event()
-            {
-                TCId = TCID,
-                GoogleId = event1.GoogleId,
-                Description = event1.Description,
-                Start = event1.Start,
-                End = event1.End,
-                Customer = event1.Customer
-            };
+        #endregion
     }
 }

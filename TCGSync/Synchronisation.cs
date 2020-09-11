@@ -12,11 +12,20 @@ using TCGSync.UI;
 
 namespace TCGSync
 {
+    /// <summary>
+    /// Class that synchronize both account
+    /// </summary>
     public static class Synchronization
     {
 
+        /// <summary>
+        /// Timer for automatic run Sync Method
+        /// </summary>
         private static System.Timers.Timer SyncTimer;
 
+        /// <summary>
+        /// Automatic synchronisation
+        /// </summary>
         public static void RunAutoSync()
         {
             if (SyncTimer != null)
@@ -31,22 +40,38 @@ namespace TCGSync
             SyncTimer.Enabled = true;
             SyncInfoGiver.RunTimerForUser();
         }
+
+        /// <summary>
+        /// Stop automatic synchronisation
+        /// </summary>
         public static void StopAutoSync()
         {
             SyncTimer.Stop();
             SyncInfoGiver.StopTimerForUser();
         }
+
+        /// <summary>
+        /// Start automatic synchronisation after its stop
+        /// </summary>
         public static void ContinueAutoSync()
         {
             SyncTimer.Enabled = true;
             SyncInfoGiver.ContinueTimerForUser();
         }
+
+        /// <summary>
+        /// immediate synchronisation in other thread
+        /// </summary>
         public static void SyncNow()
         {
             Thread t1 = new Thread(() => Sync());
             t1.Start();
         }
 
+        #region Privat Methods
+        /// <summary>
+        /// thread save synchronisation
+        /// </summary>
         private static void Sync()
         {
             lock (SyncInfoGiver.SyncInfoGiverLocker)
@@ -67,6 +92,7 @@ namespace TCGSync
                         SyncGoogle(user, start, end);
                     }
                     DataDatabase.SaveChanges();
+
                     lock (SyncInfoGiver.SyncInfoGiverLocker)
                         SyncInfoGiver.WasLastSyncSuccessful = true;
                 }
@@ -82,16 +108,28 @@ namespace TCGSync
                     SyncInfoGiver.IsProccessingSync = false;
             }
         }
+
+        /// <summary>
+        /// sync method for timer
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
         private static void Sync(Object source, ElapsedEventArgs e)
         {
             Sync();
         }
 
-
+        /// <summary>
+        /// Synchronisation Time Cockpit Timesheets with Google calendat
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
         private static void SyncTC(User user, DateTime start, DateTime end)
         {
             lock (SyncInfoGiver.SyncInfoGiverLocker)
                 SyncInfoGiver.SyncInfo = "Checking Time Cockpit Events with Google calendar";
+
             var tCBrooker = new TCBrooker(user);
             var events = tCBrooker.GetEvents(start, end);
             var newEvents = GetNewTCEvents(user, events);
@@ -110,14 +148,21 @@ namespace TCGSync
 
         }
 
+        /// <summary>
+        /// Synchronisation Google Events with Time Cockpit
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
         private static void SyncGoogle(User user, DateTime start, DateTime end)
         {
             lock (SyncInfoGiver.SyncInfoGiverLocker)
                 SyncInfoGiver.SyncInfo = "Checking Google events with Time Cockpit calendar";
+
             var gBrooker = new GBrooker(user);
             var events = gBrooker.GetEvents(start, end);
             var newEvents = GetNewGoogleEvents(user, events);
-            var modifiedEvents = GetModifiedGoogleEvents(user, events);
+            //var modifiedEvents = GetModifiedGoogleEvents(user, events);
             TCBrooker tCBrooker = new TCBrooker(user);
             foreach (var newEvent in newEvents)
             {
@@ -131,6 +176,12 @@ namespace TCGSync
             //}
         }
 
+        /// <summary>
+        /// Get Time Cokpit Events that was not in database
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="ActualEvents">Actual events from time Cokpit</param>
+        /// <returns></returns>
         private static IEnumerable<Event> GetNewTCEvents(User user, IEnumerable<Event> ActualEvents)
         {
             var oldEvents = user.EventsAccordingToTCId;
@@ -145,6 +196,12 @@ namespace TCGSync
             return newEvents;
         }
 
+        /// <summary>
+        /// Get Google Events that was not in database
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="ActualEvents">actual events from google calendars</param>
+        /// <returns></returns>
         private static IEnumerable<Event> GetNewGoogleEvents(User user, IEnumerable<Event> ActualEvents)
         {
             var oldEvents = user.EventsAccordingToGoogleId;
@@ -159,6 +216,13 @@ namespace TCGSync
             return newEvents;
         }
 
+        /// <summary>
+        /// Get Time Cockpit Events that was in database
+        /// but some parameter has changed
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="ActualEvents"></param>
+        /// <returns></returns>
         private static IEnumerable<Event> GetModifiedTCEvents(User user, IEnumerable<Event> ActualEvents)
         {
             var oldEvents = user.EventsAccordingToTCId;
@@ -173,6 +237,14 @@ namespace TCGSync
             }
             return modifiedEvents;
         }
+
+        /// <summary>
+        /// Get Google Events that was in database
+        /// but some parameter has changed
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="ActualEvents"></param>
+        /// <returns></returns>
         private static IEnumerable<Event> GetModifiedGoogleEvents(User user, IEnumerable<Event> ActualEvents)
         {
             var oldEvents = user.EventsAccordingToGoogleId;
@@ -187,6 +259,44 @@ namespace TCGSync
             }
             return modifiedEvents;
         }
+        #endregion
+    }
+
+    internal static class EventExtension
+    {
+        /// <summary>
+        /// create new Event with GoogleID as parameter
+        /// </summary>
+        /// <param name="event1"></param>
+        /// <param name="GoogleID"></param>
+        /// <returns></returns>
+        internal static Event WithGoogleID(this Event event1, string GoogleID)
+            => new Event()
+            {
+                GoogleId = GoogleID,
+                TCId = event1.TCId,
+                Description = event1.Description,
+                Start = event1.Start,
+                End = event1.End,
+                Customer = event1.Customer
+            };
+
+        /// <summary>
+        /// Create new Evet with TCId as parameter
+        /// </summary>
+        /// <param name="event1"></param>
+        /// <param name="TCID"></param>
+        /// <returns></returns>
+        internal static Event WithTCID(this Event event1, string TCID)
+            => new Event()
+            {
+                TCId = TCID,
+                GoogleId = event1.GoogleId,
+                Description = event1.Description,
+                Start = event1.Start,
+                End = event1.End,
+                Customer = event1.Customer
+            };
     }
 
 }

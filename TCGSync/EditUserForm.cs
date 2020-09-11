@@ -16,11 +16,11 @@ namespace TCGSync
 {
     public partial class EditUserForm : Form
     {
-        UserChanger userChanger;
+        UserEditor userChanger;
         public EditUserForm(User user)
         {
             InitializeComponent();
-            userChanger = new UserChanger(user, this);
+            userChanger = new UserEditor(user, this);
             FillBoxes();
 
 

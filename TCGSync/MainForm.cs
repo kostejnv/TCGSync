@@ -48,7 +48,6 @@ namespace TCGSync.UI
                 IconTray.Visible = true;
                 WindowState = FormWindowState.Minimized;
             }
-            SyncInfoGiver.SendMessage();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)

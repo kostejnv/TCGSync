@@ -40,6 +40,10 @@ namespace TCGSync.UI
         }
 
         private List<Thread> threads = new List<Thread>();
+
+        /// <summary>
+        /// Kill all thread made by Google Login
+        /// </summary>
         private void KillGLoginThreads()
         {
             foreach (var t in threads)
@@ -47,12 +51,22 @@ namespace TCGSync.UI
                 if (t.IsAlive) t.Abort();
             }
         }
+
+        /// <summary>
+        /// Google login in other thread
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GoogleButton_Click(object sender, EventArgs e)
         {
             Thread t1 = new Thread(() => GoogleButton_Click());
             t1.Start();
             threads.Add(t1);
         }
+
+        /// <summary>
+        /// Multithreading Login
+        /// </summary>
         private void GoogleButton_Click()
         {
             GoogleButton.Invoke(new Action(() => GoogleButton.BackColor = Color.Transparent));

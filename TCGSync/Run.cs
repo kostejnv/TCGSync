@@ -30,6 +30,9 @@ namespace TCGSync
             DataDatabase.SaveChanges();
         }
 
+        /// <summary>
+        /// Boolean if the application is start for the first time
+        /// </summary>
         public static bool FirstTimeRun = false;
     }
 }

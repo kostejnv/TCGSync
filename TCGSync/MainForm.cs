@@ -33,6 +33,7 @@ namespace TCGSync.UI
 
         private void SetTimeButton_Click(object sender, EventArgs e)
         {
+            lock (DataDatabase.IntervalInMinutesLocker)
             DataDatabase.IntervalInMinutes = SyncIntervalBox.Value;
             Synchronization.RunAutoSync();
         }
@@ -93,6 +94,11 @@ namespace TCGSync.UI
             CreateButton_Click(sender, e);
         }
 
+        /// <summary>
+        /// Hide window and not close after (X) or ALT+F4
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
@@ -121,6 +127,12 @@ namespace TCGSync.UI
             EditUserForm editUserForm = new EditUserForm(user);
             editUserForm.Show();
         }
+
+        /// <summary>
+        /// Show masagge by SyncInfoGiver
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="important"></param>
         public void ShowMessage(string text, bool important = false)
         {
             if (!IsDisposed && Created)

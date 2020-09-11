@@ -98,6 +98,7 @@
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.helpToolStripMenuItem.Text = "Help";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
@@ -157,6 +158,7 @@
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
             this.helpToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.helpToolStripMenuItem1.Text = "Help";
+            this.helpToolStripMenuItem1.Click += new System.EventHandler(this.helpToolStripMenuItem1_Click);
             // 
             // exitToolStripMenuItem1
             // 
@@ -236,6 +238,11 @@
             0,
             0,
             0});
+            this.SyncIntervalBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.SyncIntervalBox.Name = "SyncIntervalBox";
             this.SyncIntervalBox.Size = new System.Drawing.Size(60, 22);
             this.SyncIntervalBox.TabIndex = 8;
@@ -274,7 +281,7 @@
             this.ChangeUserButton.Name = "ChangeUserButton";
             this.ChangeUserButton.Size = new System.Drawing.Size(117, 33);
             this.ChangeUserButton.TabIndex = 19;
-            this.ChangeUserButton.Text = "Change";
+            this.ChangeUserButton.Text = "Edit";
             this.ChangeUserButton.UseVisualStyleBackColor = true;
             this.ChangeUserButton.Click += new System.EventHandler(this.ChangeUserButton_Click);
             // 
@@ -295,6 +302,7 @@
             this.IconTray.Text = "IconTray";
             this.IconTray.Visible = true;
             this.IconTray.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.IconTray_MouseDoubleClick);
+            this.IconTray.MouseMove += new System.Windows.Forms.MouseEventHandler(this.IconTray_MouseMove);
             // 
             // MainForm
             // 
@@ -320,6 +328,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.contextMenuStrip.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

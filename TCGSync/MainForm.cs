@@ -17,6 +17,7 @@ namespace TCGSync.UI
         public MainForm()
         {
             InitializeComponent();
+
         }
 
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
@@ -45,8 +46,9 @@ namespace TCGSync.UI
             else
             {
                 IconTray.Visible = true;
-                this.Hide();
+                WindowState = FormWindowState.Minimized;
             }
+            SyncInfoGiver.SendMessage();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -187,6 +189,26 @@ namespace TCGSync.UI
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Dispose();
+        }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+
+        }
+
+        private void IconTray_MouseMove(object sender, MouseEventArgs e)
+        {
+            SyncInfoGiver.SendMessage();
+        }
+
+        private void helpToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("TCGSync_uzivatelska_prirucka.pdf");
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("TCGSync_uzivatelska_prirucka.pdf");
         }
     }
 }

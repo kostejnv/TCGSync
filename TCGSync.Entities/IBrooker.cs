@@ -28,6 +28,6 @@ namespace TCGSync.Entities
         /// Edit event in a calendar with the same ID
         /// </summary>
         /// <param name="event1">Edited event</param>
-        void SetEvent(Event event1);
+        void EditEvent(Event event1);
     }
 }

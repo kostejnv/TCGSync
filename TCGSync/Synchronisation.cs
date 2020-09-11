@@ -24,8 +24,8 @@ namespace TCGSync
                 SyncTimer.Stop();
                 SyncTimer.Dispose();
             }
-            lock (UserDatabase.IntervalInMinutesLocker)
-                SyncTimer = new System.Timers.Timer((double)(UserDatabase.IntervalInMinutes * 60 * 1000));
+            lock (DataDatabase.IntervalInMinutesLocker)
+                SyncTimer = new System.Timers.Timer((double)(DataDatabase.IntervalInMinutes * 60 * 1000));
             SyncTimer.Elapsed += Sync;
             SyncTimer.AutoReset = true;
             SyncTimer.Enabled = true;
@@ -55,9 +55,9 @@ namespace TCGSync
                 SyncInfoGiver.IsProccessingSync = true;
             try
             {
-                lock (UserDatabase.userDatabase)
+                lock (DataDatabase.userDatabase)
                 {
-                    foreach (var user in UserDatabase.userDatabase)
+                    foreach (var user in DataDatabase.userDatabase)
                     {
                         DateTime start = DateTime.Now - TimeSpan.FromDays(user.PastSyncInterval);
                         DateTime end;
@@ -66,7 +66,7 @@ namespace TCGSync
                         SyncTC(user, start, end);
                         SyncGoogle(user, start, end);
                     }
-                    UserDatabase.SaveChanges();
+                    DataDatabase.SaveChanges();
                     lock (SyncInfoGiver.SyncInfoGiverLocker)
                         SyncInfoGiver.WasLastSyncSuccessful = true;
                 }
@@ -104,7 +104,7 @@ namespace TCGSync
             }
             foreach (var modifiedEvent in modifiedEvents)
             {
-                gBrooker.SetEvent(modifiedEvent);
+                gBrooker.EditEvent(modifiedEvent);
                 user.ChangeEvent(modifiedEvent);
             }
 
@@ -269,12 +269,12 @@ namespace TCGSync
             {
 
 
-                lock (UserDatabase.IntervalInMinutesLocker)
+                lock (DataDatabase.IntervalInMinutesLocker)
                 {
                     SyncMinutesTimer = new System.Timers.Timer(60 * 1000);
                     SyncMinutesTimer.Elapsed += SyncTimer;
                     SyncMinutesTimer.AutoReset = true;
-                    MinutesToNextSync = (int)UserDatabase.IntervalInMinutes;
+                    MinutesToNextSync = (int)DataDatabase.IntervalInMinutes;
                     SyncMinutesTimer.Enabled = true;
                 }
             }
@@ -332,8 +332,8 @@ namespace TCGSync
             }
             else
             {
-                lock (UserDatabase.IntervalInMinutesLocker)
-                    MinutesToNextSync = (int)UserDatabase.IntervalInMinutes;
+                lock (DataDatabase.IntervalInMinutesLocker)
+                    MinutesToNextSync = (int)DataDatabase.IntervalInMinutes;
             }
         }
     }

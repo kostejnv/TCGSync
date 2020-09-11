@@ -9,12 +9,45 @@ namespace TCGSync.Entities
 
     public class Event
     {
+        /// <summary>
+        /// Event ID in Google Calendar
+        /// </summary>
         public string GoogleId;
+
+        /// <summary>
+        /// Timesheet ID in Time Cockpit
+        /// </summary>
         public string TCId;
+
+        /// <summary>
+        /// Event Beginning
+        /// </summary>
         public DateTime? Start;
+
+        /// <summary>
+        /// Event End
+        /// </summary>
         public DateTime? End;
+
+        /// <summary>
+        /// Event Description
+        /// </summary>
         public string Description;
+
+        /// <summary>
+        /// Customer for Timesheet task or project, optionally
+        /// </summary>
         public string Customer;
+
+        /// <summary>
+        /// Separator for stored data
+        /// </summary>
+        public static readonly char ParameterSeparator = '}';
+
+        /// <summary>
+        /// Constructor for stored event
+        /// </summary>
+        /// <param name="data"></param>
         public Event(string data)
         {
             char[] separator = new char[1] { ParameterSeparator };
@@ -25,12 +58,14 @@ namespace TCGSync.Entities
             End = new DateTime(Int64.Parse(splited[3]));
             Description = splited[4];
             Customer = splited[5];
-
         }
 
         public Event() { }
 
-        public static readonly char ParameterSeparator = '}';
+        /// <summary>
+        /// Method for storing event
+        /// </summary>
+        /// <returns></returns>
         public string ToStore()
         {
             try
@@ -57,7 +92,6 @@ namespace TCGSync.Entities
                 throw new ArgumentException("Event has not all parameters");
             }
         }
-
 
         public override bool Equals(object obj)
         {

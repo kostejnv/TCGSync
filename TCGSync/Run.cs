@@ -22,12 +22,12 @@ namespace TCGSync
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MainForm mainForm = new MainForm();
-            UserDatabase.InitializeDatabase(mainForm, mainForm.SyncIntervalBox);
+            DataDatabase.InitializeDatabase(mainForm, mainForm.SyncIntervalBox);
             SyncInfoGiver.Initialization(mainForm);
             Synchronization.RunAutoSync();
             Synchronization.SyncNow();
             Application.Run(mainForm);
-            UserDatabase.SaveChanges();
+            DataDatabase.SaveChanges();
         }
 
         public static bool FirstTimeRun = false;

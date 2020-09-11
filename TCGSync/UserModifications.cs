@@ -31,7 +31,7 @@ namespace TCGSync.UserModifications
 
         public bool TCVerify(string username, string password)
         {
-            if (UserDatabase.ExistsUser(username))
+            if (DataDatabase.ExistsUser(username))
             {
                 MessageBox.Show
                     ("There is the same username in database! Time Cockpit username is unique parameter and therefore it cannot be use more than once.",
@@ -76,7 +76,7 @@ namespace TCGSync.UserModifications
             {
                 if (Form.CalendarsBox.SelectedItem != null)
                 {
-                    NewUser.googleCalendarId = ((CalendarInfo)(Form.CalendarsBox.SelectedItem)).ID;
+                    NewUser.googleCalendarId = ((GoogleCalendarInfo)(Form.CalendarsBox.SelectedItem)).ID;
                     WaSSetSetting = true;
                 }
                 else
@@ -88,7 +88,7 @@ namespace TCGSync.UserModifications
             if (!WasTCVerify) throw new InvalidOperationException("Time Cockpit verifying was not successful");
             if (!WasGLogin) throw new InvalidOperationException("Google Login was not successful");
             if (!WaSSetSetting) throw new InvalidOperationException("Setting was not filled");
-            if (UserDatabase.ExistsUser(NewUser.TCUsername))
+            if (DataDatabase.ExistsUser(NewUser.TCUsername))
                 throw new InvalidOperationException("There is the same username in database! Time Cockpit username is unique parameter and therefore it cannot be use more than once.");
             NewUser.GoogleEmail = GUtil.GetEmail(NewUser);
             Synchronization.SyncNow();
@@ -112,12 +112,12 @@ namespace TCGSync.UserModifications
                 MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                lock (UserDatabase.userDatabase)
+                lock (DataDatabase.userDatabase)
                 {
-                    UserDatabase.userDatabase.Remove(user);
+                    DataDatabase.userDatabase.Remove(user);
                     GUtil.RemoveGoogleToken(user);
-                    UserDatabase.RefreshListBox();
-                    UserDatabase.SaveChanges();
+                    DataDatabase.RefreshListBox();
+                    DataDatabase.SaveChanges();
                 }
             }
         }
@@ -195,7 +195,7 @@ namespace TCGSync.UserModifications
             {
                 if (Form.CalendarsBox.SelectedItem != null)
                 {
-                    ChangingUser.googleCalendarId = ((CalendarInfo)(Form.CalendarsBox.SelectedItem)).ID;
+                    ChangingUser.googleCalendarId = ((GoogleCalendarInfo)(Form.CalendarsBox.SelectedItem)).ID;
                     WaSSetSetting = true;
                 }
                 else
@@ -205,17 +205,17 @@ namespace TCGSync.UserModifications
         public void ChangeUserInDatabse()
         {
             if (!WaSSetSetting) throw new InvalidOperationException("Setting was not filled");
-            lock (UserDatabase.userDatabase)
+            lock (DataDatabase.userDatabase)
             {
-                lock (UserDatabase.userDatabase)
+                lock (DataDatabase.userDatabase)
                 {
                     ChangingUser.EventsAccordingToGoogleId = OldUser.EventsAccordingToGoogleId;
                     ChangingUser.EventsAccordingToTCId = OldUser.EventsAccordingToTCId;
                     ChangingUser.Events = OldUser.Events;
                     ChangeGoogleToken();
-                    UserDatabase.userDatabase.Remove(OldUser);
+                    DataDatabase.userDatabase.Remove(OldUser);
                     ChangingUser.GoogleEmail = GetGoogleEmail();
-                    UserDatabase.AddUserToUserDatabase(ChangingUser);
+                    DataDatabase.AddUserToUserDatabase(ChangingUser);
                 }
             }
             if (WasGLogin) Synchronization.SyncNow();

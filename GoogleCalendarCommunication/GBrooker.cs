@@ -19,7 +19,11 @@ namespace GoogleCalendarCommunication
     /// </summary>
     public sealed class GBrooker : IBrooker
     {
-        User user;
+        /// <summary>
+        /// user that is associeted with brooker
+        /// </summary>
+        private readonly User user;
+
         /// <summary>
         /// Data servis for access to Google Calendar database
         /// </summary>
@@ -37,14 +41,14 @@ namespace GoogleCalendarCommunication
         {
             this.user = user;
             UserCredential credential = GUtil.GetCredentials(user);
-            // Create Google Calendar API service.
             GService = GUtil.GetCalendarService(credential);
         }
+
         /// <summary>
-        /// Get Hashset of events from user's Google Calendar in the interval
+        /// Get IEnumerable of events from user's Google Calendar in the intervall
         /// </summary>
-        /// <param name="start">Start of time interval</param>
-        /// <param name="end">End of time interval</param>
+        /// <param name="start">Start of time intervall</param>
+        /// <param name="end">End of time intervall</param>
         /// <returns></returns>
         public IEnumerable<TCGSync.Entities.Event> GetEvents(DateTime start, DateTime end)
         {
@@ -55,7 +59,7 @@ namespace GoogleCalendarCommunication
             request.ShowDeleted = false;
             request.SingleEvents = true;
 
-            // List events.
+            // Convert Events to List<Event>
             Events events = request.Execute();
             var glist = new List<TCGSync.Entities.Event>();
             foreach (var eventItem in events.Items)
@@ -63,9 +67,8 @@ namespace GoogleCalendarCommunication
                 glist.Add(new GoogleEvent(eventItem));
             }
             return glist;
-
-
         }
+
         /// <summary>
         /// Add new event in google calendar
         /// </summary>
@@ -77,13 +80,13 @@ namespace GoogleCalendarCommunication
             var request = GService.Events.Insert(googleEvent, user.googleCalendarId);
             Google.Apis.Calendar.v3.Data.Event response = request.Execute();
             return response.Id;
-
         }
+
         /// <summary>
         /// Edit Event with the same ID
         /// </summary>
         /// <param name="event1">Event with changes</param>
-        public void SetEvent(TCGSync.Entities.Event event1)
+        public void EditEvent(TCGSync.Entities.Event event1)
         {
             EventsResource.GetRequest getRequest = new EventsResource.GetRequest(GService, user.googleCalendarId, event1.GoogleId);
             Google.Apis.Calendar.v3.Data.Event googleEvent = getRequest.Execute();
@@ -98,7 +101,7 @@ namespace GoogleCalendarCommunication
     /// <summary>
     /// Event with specific parameter for Google Calendar
     /// </summary>
-    sealed class GoogleEvent : TCGSync.Entities.Event
+    internal sealed class GoogleEvent : TCGSync.Entities.Event
     {
         /// <summary>
         /// Constructor that creates GoogleEvent from Google Calendar Event
@@ -106,6 +109,7 @@ namespace GoogleCalendarCommunication
         /// <param name="event1">Google Calendar Event</param>
         internal GoogleEvent(Google.Apis.Calendar.v3.Data.Event event1)
         {
+            //Google EventDateTime is not shift with timezone
             TimeZone localTimeZone = TimeZone.CurrentTimeZone;
             TimeSpan currentOffset = localTimeZone.GetUtcOffset(DateTime.Now);
             GoogleId = event1.Id;
@@ -115,10 +119,10 @@ namespace GoogleCalendarCommunication
         }
     }
 
-    static class EventAbstractExtension
+    internal static class EventExtension
     {
         /// <summary>
-        /// Extension method that converse EventAbstract to GoogleEvent
+        /// Extension method that converse Event to GoogleEvent
         /// </summary>
         /// <param name="event1"></param>
         /// <returns></returns>

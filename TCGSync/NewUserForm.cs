@@ -74,7 +74,7 @@ namespace TCGSync.UI
             userCreator.SetSetting((int)StartDomain.Value, !EndSpecifiedCheckBox.Checked, (int)EndDomain.Value);
             try
             {
-                UserDatabase.AddUserToUserDatabase(userCreator.GetUser());
+                DataDatabase.AddUserToUserDatabase(userCreator.GetUser());
                 KillGLoginThreads();
                 this.Dispose();
             }

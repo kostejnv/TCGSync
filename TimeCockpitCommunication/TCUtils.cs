@@ -9,6 +9,10 @@ using TCGSync.Entities;
 
 namespace TimeCockpitCommunication
 {
+
+    /// <summary>
+    /// static class with Time Cockpit utilities
+    /// </summary>
     public static class TCUtils
     {
         /// <summary>
@@ -24,7 +28,9 @@ namespace TimeCockpitCommunication
                 var TCsvc = new DataService(new Uri("https://apipreview.timecockpit.com/odata", UriKind.Absolute));
                 TCsvc.Credentials = new NetworkCredential(username, password);
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                var temp = TCsvc.APP_UserDetail.First();        // trivial query to check if credentials are correct
+
+                // trivial query to check if credentials are correct
+                var temp = TCsvc.APP_UserDetail.First();        
                 return true;
             }
             catch (System.Data.Services.Client.DataServiceQueryException)
@@ -33,6 +39,11 @@ namespace TimeCockpitCommunication
             }
         }
 
+        /// <summary>
+        /// Get Fullname of user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public static string GetFullname(User user)
         {
             var service = new DataService(new Uri("https://apipreview.timecockpit.com/odata", UriKind.Absolute));

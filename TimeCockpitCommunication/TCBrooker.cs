@@ -9,11 +9,27 @@ using TCGSync.Entities;
 
 namespace TimeCockpitCommunication
 {
-    public class TCBrooker : IBrooker
-    {
-        DataService TCService;
-        User user;
 
+    /// <summary>
+    /// Brooker that can communicate with Time Cockpit
+    /// </summary>
+    public sealed class TCBrooker : IBrooker
+    {
+
+        /// <summary>
+        /// Data service for accass to Time Cockpit
+        /// </summary>
+        private readonly DataService TCService;
+
+        /// <summary>
+        /// user that is associeted with brooker
+        /// </summary>
+        private readonly User user;
+
+        /// <summary>
+        /// Constructor that create access to user's Time Cockpit
+        /// </summary>
+        /// <param name="user"></param>
         public TCBrooker(User user)
         {
             var service = new DataService(new Uri("https://apipreview.timecockpit.com/odata", UriKind.Absolute));
@@ -23,20 +39,20 @@ namespace TimeCockpitCommunication
             this.user = user;
         }
 
-        public string CreateEvent(Event event1)
-        {
-            var tCEvent = event1.ToAPP_Timesheet(user, TCService);
-            TCService.AddToAPP_Timesheet(tCEvent);
-            TCService.SaveChanges();
-            return tCEvent.APP_TimesheetUuid.ToString();
-        }
-
+        /// <summary>
+        /// Get IEnumerable of events from user's Time Cockpit in the intervall
+        /// </summary>
+        /// <param name="start">Start of time intervall</param>
+        /// <param name="end">End of time intervall</param>
+        /// <returns></returns>
         public IEnumerable<Event> GetEvents(DateTime start, DateTime end)
         {
+            // get Time Cockpit timesheets
             var timesheets = TCService.APP_Timesheet
                 .Where(t => t.APP_BeginTime >= start && t.APP_EndTime <= end && user.TCUsername == t.APP_UserDetail.APP_Username)
                 .AsEnumerable();
 
+            // convert Timsheets to List<Event>
             var eventlist = new List<Event>();
             foreach (var timesheet in timesheets)
             {
@@ -45,7 +61,25 @@ namespace TimeCockpitCommunication
             return eventlist;
         }
 
-        public void SetEvent(Event event1) //TODO
+        /// <summary>
+        /// Add new event to Time Cockpit
+        /// </summary>
+        /// <param name="event1"></param>
+        /// <returns></returns>
+        public string CreateEvent(Event event1)
+        {
+            var tCEvent = event1.ToAPP_Timesheet(user, TCService);
+            TCService.AddToAPP_Timesheet(tCEvent);
+            TCService.SaveChanges();
+            return tCEvent.APP_TimesheetUuid.ToString();
+        }
+
+        /// <summary>
+        /// Edit Event with the same ID,
+        /// IT DOES NOT WORK
+        /// </summary>
+        /// <param name="event1"></param>
+        public void EditEvent(Event event1)
         {
             APP_Timesheet tCEvent = TCService.APP_Timesheet.Where(t => t.APP_TimesheetUuid == new Guid(event1.TCId)).First();
             tCEvent.APP_BeginTime = event1.Start;
@@ -56,8 +90,16 @@ namespace TimeCockpitCommunication
         }
     }
 
-    public sealed class TimeCockpitEvent : Event
+    /// <summary>
+    /// Event with specific parameter for Time Cockpit
+    /// </summary>
+    internal sealed class TimeCockpitEvent : Event
     {
+
+        /// <summary>
+        /// Constructor that creates TimeCockpitEvent from APP_Timesheet
+        /// </summary>
+        /// <param name="timesheet">Time Cockpit Timesheet</param>
         internal TimeCockpitEvent(APP_Timesheet timesheet)
         {
             TCId = timesheet.APP_TimesheetUuid.ToString();
@@ -67,8 +109,15 @@ namespace TimeCockpitCommunication
         }
     }
 
-    static class EventAbstractExtension
+    internal static class EventExtension
     {
+        /// <summary>
+        /// Extension method that converse Event to TimeCockpitEvent
+        /// </summary>
+        /// <param name="event1"></param>
+        /// <param name="user"></param>
+        /// <param name="services"></param>
+        /// <returns></returns>
         internal static APP_Timesheet ToAPP_Timesheet(this Event event1, User user, DataService services)
             => new APP_Timesheet
             {

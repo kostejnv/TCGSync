@@ -116,6 +116,7 @@ namespace TCGSync.UI
         private void CancelButton_Click(object sender, EventArgs e)
         {
             KillGLoginThreads();
+            userCreator.Dispose();
             Dispose();
         }
 

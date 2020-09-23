@@ -15,7 +15,7 @@ namespace TCGSync.UserModifications
     /// <summary>
     /// class that contains method for create user
     /// </summary>
-    public class UserCreator
+    public class UserCreator : IDisposable
     {
         private User NewUser;
 
@@ -137,6 +137,11 @@ namespace TCGSync.UserModifications
             Synchronization.SyncNow();
 
             return NewUser;
+        }
+
+        public void Dispose()
+        {
+            TCCredentialsManager.Delete(NewUser.Username);
         }
     }
 

@@ -123,7 +123,6 @@ namespace TCGSync.Entities
             StringBuilder data = new StringBuilder();
             data.Append(Username);
             data.Append(ParameterSeparator);
-            data.Append(ParameterSeparator);
             data.Append(googleCalendarId);
             data.Append(ParameterSeparator);
             data.Append(PastSyncInterval);

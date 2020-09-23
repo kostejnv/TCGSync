@@ -196,14 +196,17 @@ namespace TCGSync
         /// <param name="e"></param>
         private static void SyncTimer(Object source, ElapsedEventArgs e)
         {
-            if (MinutesToNextSync > 0)
+            if (MinutesToNextSync > 1)
             {
-                MinutesToNextSync--;
+                lock (DataDatabase.IntervalInMinutesLocker)
+                    MinutesToNextSync--;
+                SendMessage();
             }
             else
             {
                 lock (DataDatabase.IntervalInMinutesLocker)
                     MinutesToNextSync = (int)DataDatabase.IntervalInMinutes;
+                SendMessage();
             }
         }
         #endregion

@@ -15,6 +15,7 @@ namespace TimeCockpitCommunication
         public static NetworkCredential Get(string username)
         {
             var cred = CredentialManager.ReadCredential(AppName + username);
+            if (cred == null) return null;
             return new NetworkCredential(cred.UserName, cred.Password);
         }
 
@@ -28,9 +29,9 @@ namespace TimeCockpitCommunication
         }
         public static void Delete(string username)
         {
-            CredentialManager.DeleteCredential(AppName + username);
+            if (Exists(username)) CredentialManager.DeleteCredential(AppName + username);
         }
 
-        public static bool Exists(string username) => Get(username) == null;
+        public static bool Exists(string username) => Get(username) != null;
     }
 }

@@ -58,8 +58,8 @@ namespace TCGSync.UserModifications
             }
             if (TCUtils.VerifyAccount(username, password))
             {
-                NewUser.TCUsername = username;
-                NewUser.TCPassword = password;
+                TCCredentialsManager.Save(username, password);
+                NewUser.Username = username;
                 NewUser.Fullname = TCUtils.GetFullname(NewUser);
                 WasTCVerify = true;
                 return true;
@@ -73,7 +73,7 @@ namespace TCGSync.UserModifications
         /// <returns></returns>
         public bool GoogleLogin()
         {
-            if (NewUser.TCUsername == null) throw new InvalidOperationException("This operation is without UserName not supported");
+            if (NewUser.Username == null) throw new InvalidOperationException("This operation is without UserName not supported");
             GUtil.GLogin(NewUser);
             WasGLogin = true;
 
@@ -130,7 +130,7 @@ namespace TCGSync.UserModifications
             if (!WaSSetSetting) throw new InvalidOperationException("Setting was not filled");
             
             //Check if new user with same Timecockpit credentials was added meanwhile set setting
-            if (DataDatabase.ExistsUser(NewUser.TCUsername))
+            if (DataDatabase.ExistsUser(NewUser.Username))
                 throw new InvalidOperationException("There is the same username in database! Time Cockpit username is unique parameter and therefore it cannot be use more than once.");
 
             NewUser.GoogleEmail = GUtil.GetEmail(NewUser);

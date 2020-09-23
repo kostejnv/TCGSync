@@ -93,7 +93,7 @@ namespace TCGSync.UserModifications
         public string GetGoogleEmail()
         {
             string[] files = Directory.GetFiles(tempDir);
-            var tokenNames = files.Where(f => f.Contains(ChangingUser.TCUsername));
+            var tokenNames = files.Where(f => f.Contains(ChangingUser.Username));
 
             // if google acount was editted
             if (tokenNames.ToList().Count != 0)
@@ -114,7 +114,7 @@ namespace TCGSync.UserModifications
         public bool GoogleLogin()
         {
             RemoveTemp();
-            if (ChangingUser.TCUsername == null) throw new InvalidOperationException("This operation is without UserName not supported");
+            if (ChangingUser.Username == null) throw new InvalidOperationException("This operation is without UserName not supported");
 
             //login
             GUtil.GLogin(ChangingUser, "temp");
@@ -209,10 +209,10 @@ namespace TCGSync.UserModifications
             try
             {
                 string[] files = Directory.GetFiles(tempDir);
-                var tokenNames = files.Where(f => f.Contains(ChangingUser.TCUsername));
+                var tokenNames = files.Where(f => f.Contains(ChangingUser.Username));
                 if (tokenNames.ToList().Count != 0)
                 {
-                    string tokenNameFullPath = files.Where(f => f.Contains(ChangingUser.TCUsername)).First();
+                    string tokenNameFullPath = files.Where(f => f.Contains(ChangingUser.Username)).First();
                     string tokenName = tokenNameFullPath.Substring(tempDir.Length + 1);
                     File.Copy(tokenNameFullPath, Path.Combine(tokenDir, tokenName));
                 }

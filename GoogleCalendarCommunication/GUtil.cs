@@ -75,7 +75,7 @@ namespace GoogleCalendarCommunication
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
                     Scopes,
-                    user.TCUsername,
+                    user.Username,
                     CancellationToken.None,
                     new FileDataStore(path, true)).Result;
             }
@@ -109,12 +109,12 @@ namespace GoogleCalendarCommunication
             {
                 //try to find user token
                 string[] files = Directory.GetFiles(TokenDirectory);
-                var tokenNames = files.Where(f => f.Contains(user.TCUsername));
+                var tokenNames = files.Where(f => f.Contains(user.Username));
 
                 //if token exist delete
                 if (tokenNames.ToList().Count != 0)
                 {
-                    string tokenName = files.Where(f => f.Contains(user.TCUsername)).First();
+                    string tokenName = files.Where(f => f.Contains(user.Username)).First();
                     File.Delete(tokenName);
                 }
             }

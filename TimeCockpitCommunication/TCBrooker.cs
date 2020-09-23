@@ -32,8 +32,8 @@ namespace TimeCockpitCommunication
         /// <param name="user"></param>
         public TCBrooker(User user)
         {
-            if (!TCCredentialsManager.Exists(user.TCUsername)) throw new InvalidOperationException();
-            var service = TCUtils.GetService(TCCredentialsManager.Get(user.TCUsername));
+            if (!TCCredentialsManager.Exists(user.Username)) throw new InvalidOperationException("User has not TC credentials");
+            var service = TCUtils.GetService(TCCredentialsManager.Get(user.Username));
             TCService = service;
             this.user = user;
         }
@@ -48,7 +48,7 @@ namespace TimeCockpitCommunication
         {
             // get Time Cockpit timesheets
             var timesheets = TCService.APP_Timesheet
-                .Where(t => t.APP_BeginTime >= start && t.APP_EndTime <= end && user.TCUsername == t.APP_UserDetail.APP_Username)
+                .Where(t => t.APP_BeginTime >= start && t.APP_EndTime <= end && user.Username == t.APP_UserDetail.APP_Username)
                 .AsEnumerable();
 
             // convert Timsheets to List<Event>
@@ -124,8 +124,8 @@ namespace TimeCockpitCommunication
                 APP_EndTime = event1.End,
                 APP_Description = event1.Description,
                 APP_NoBilling = false,
-                APP_UserDetail = services.APP_UserDetail.Where(t => t.APP_Username == user.TCUsername).First(),
-                APP_UserDetailUuid = services.APP_UserDetail.Where(t => t.APP_Username == user.TCUsername).First().APP_UserDetailUuid
+                APP_UserDetail = services.APP_UserDetail.Where(t => t.APP_Username == user.Username).First(),
+                APP_UserDetailUuid = services.APP_UserDetail.Where(t => t.APP_Username == user.Username).First().APP_UserDetailUuid
             };
     }
 }

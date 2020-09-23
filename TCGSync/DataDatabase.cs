@@ -97,7 +97,7 @@ namespace TCGSync
         {
             lock (userDatabase)
             {
-                return userDatabase.Where(u => u.TCUsername == username).Any();
+                return userDatabase.Where(u => u.Username == username).Any();
             }
         }
 

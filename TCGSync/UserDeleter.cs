@@ -36,6 +36,7 @@ namespace TCGSync.UserModifications
             {
                 lock (DataDatabase.userDatabase)
                 {
+                    TCCredentialsManager.Delete(user.Username);
                     DataDatabase.userDatabase.Remove(user);
                     GUtil.RemoveGoogleToken(user);
                     DataDatabase.RefreshListBox();

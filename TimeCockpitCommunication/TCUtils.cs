@@ -52,9 +52,9 @@ namespace TimeCockpitCommunication
         /// <returns></returns>
         public static string GetFullname(User user)
         {
-            if (!TCCredentialsManager.Exists(user.TCUsername)) throw new InvalidOperationException();
-            var service = GetService(TCCredentialsManager.Get(user.TCUsername));
-            return service.APP_UserDetail.Where(u => u.APP_Username == user.TCUsername).First().APP_Fullname;
+            if (!TCCredentialsManager.Exists(user.Username)) throw new InvalidOperationException("User has not TC credentials");
+            var service = GetService(TCCredentialsManager.Get(user.Username));
+            return service.APP_UserDetail.Where(u => u.APP_Username == user.Username).First().APP_Fullname;
         }
     }
 }

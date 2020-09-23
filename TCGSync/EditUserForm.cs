@@ -30,8 +30,7 @@ namespace TCGSync
         private void FillBoxes()
         {
             var user = userChanger.ChangingUser;
-            TCUserNameTextBox.Text = user.TCUsername;
-            TCPasswordTextBox.Text = user.TCPassword;
+            TCUserNameTextBox.Text = user.Username;
             StartDomain.Value = user.PastSyncInterval;
             if (user.IsFutureSpecified)
             {
@@ -131,6 +130,11 @@ namespace TCGSync
             {
                 GoogleButton.Invoke(new Action(() => GoogleButton.BackColor = Color.OrangeRed));
             }
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

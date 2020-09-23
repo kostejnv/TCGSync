@@ -32,9 +32,8 @@ namespace TimeCockpitCommunication
         /// <param name="user"></param>
         public TCBrooker(User user)
         {
-            var service = new DataService(new Uri("https://apipreview.timecockpit.com/odata", UriKind.Absolute));
-            service.Credentials = new NetworkCredential(user.TCUsername, user.TCPassword);
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            if (!TCCredentialsManager.Exists(user.TCUsername)) throw new InvalidOperationException();
+            var service = TCUtils.GetService(TCCredentialsManager.Get(user.TCUsername));
             TCService = service;
             this.user = user;
         }

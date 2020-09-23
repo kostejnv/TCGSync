@@ -25,9 +25,7 @@ namespace TimeCockpitCommunication
         {
             try
             {
-                var TCsvc = new DataService(new Uri("https://apipreview.timecockpit.com/odata", UriKind.Absolute));
-                TCsvc.Credentials = new NetworkCredential(username, password);
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                var TCsvc = GetService(new NetworkCredential(username, password));
 
                 // trivial query to check if credentials are correct
                 var temp = TCsvc.APP_UserDetail.First();        
@@ -39,6 +37,14 @@ namespace TimeCockpitCommunication
             }
         }
 
+        public static DataService GetService(NetworkCredential cred)
+        {
+            var TCsvc = new DataService(new Uri("https://apipreview.timecockpit.com/odata", UriKind.Absolute));
+            TCsvc.Credentials = cred;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            return TCsvc;
+        }
+
         /// <summary>
         /// Get Fullname of user
         /// </summary>
@@ -46,9 +52,8 @@ namespace TimeCockpitCommunication
         /// <returns></returns>
         public static string GetFullname(User user)
         {
-            var service = new DataService(new Uri("https://apipreview.timecockpit.com/odata", UriKind.Absolute));
-            service.Credentials = new NetworkCredential(user.TCUsername, user.TCPassword);
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            if (!TCCredentialsManager.Exists(user.TCUsername)) throw new InvalidOperationException();
+            var service = GetService(TCCredentialsManager.Get(user.TCUsername));
             return service.APP_UserDetail.Where(u => u.APP_Username == user.TCUsername).First().APP_Fullname;
         }
     }

@@ -50,6 +50,7 @@ namespace TCGSync.UserModifications
         /// <param name="form"></param>
         public UserEditor(User user, EditUserForm form)
         {
+            if (!Directory.Exists(tempDir)) Directory.CreateDirectory(tempDir);
             lock (DataDatabase.userDatabase)
             {
                 ChangingUser = (User)user.Clone();
